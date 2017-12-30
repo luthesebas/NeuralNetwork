@@ -24,7 +24,7 @@ public class Vector {
     //--------------------------------------
 
     public Vector negate() {
-        return this.mult(-1);
+        return this.multiply(-1);
     }
 
     public Vector add(float scalar) {
@@ -47,15 +47,15 @@ public class Vector {
         return new Vector(result);
     }
 
-    public Vector substract(float scalar) {
+    public Vector subtract(float scalar) {
         return this.add(-scalar);
     }
 
-    public Vector substract(Vector other) {
+    public Vector subtract(Vector other) {
         return this.add(other.negate());
     }
 
-    public Vector mult(float scalar) {
+    public Vector multiply(float scalar) {
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
             result[i] *= scalar;
@@ -64,7 +64,12 @@ public class Vector {
         return new Vector(result);
     }
 
-    public Vector mult(Vector other) {
+    /**
+     * Not summed up dot product.
+     * @param other the vector with which is multiplied
+     * @return multiplied vector result
+     */
+    public Vector multiply(Vector other) {
         checkVectorDimension(other);
 
         float[] result = this.toArray();
@@ -75,46 +80,27 @@ public class Vector {
         return new Vector(result);
     }
 
-    public Vector divide(float scalar) {
-        return this.mult(1f / scalar);
-    }
-
-    public Vector divide(Vector other) {
-        return this.mult(other.inverse());
-    }
-
-    public Vector inverse() {
-        float[] result = toArray();
-        for (int i = 0; i < result.length; i++) {
-            result[i] = 1f / result[i];
-        }
-
-        return new Vector(result);
+    public float dot(Vector other) {
+        return this.multiply(other).sumUp();
     }
 
     public Vector scale(float scalar) {
-        return this.mult(scalar);
+        return this.multiply(scalar);
     }
 
     public float sumUp() {
         float result = 0;
-        for (int i = 0; i < this.elements.length; i++) {
-            result += this.elements[i];
+        for (float element : this.elements) {
+            result += element;
         }
 
         return result;
     }
 
     private void checkVectorDimension(Vector other) {
-        if (this.getDimension() != other.getDimension()) {
+        if (this.getDimension().getM() != other.getDimension().getM()) {
             throw new InvalidParameterException("Vectors must have the same size");
         }
-    }
-
-    public boolean equalsDimension(Vector other) {
-        if (this.getDimension() != other.getDimension())
-            return false;
-        return true;
     }
 
     public float[] toArray() {

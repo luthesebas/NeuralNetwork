@@ -1,6 +1,7 @@
 package neuralnetwork.math;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -14,10 +15,6 @@ public class Vector {
     // Constructors
     //--------------------------------------
 
-    /**
-     *
-     * @param elements
-     */
     public Vector(float... elements) {
         this.elements = Objects.requireNonNull(elements);
     }
@@ -40,7 +37,7 @@ public class Vector {
     }
 
     public Vector add(Vector other) {
-        checkVectorSize(other);
+        checkVectorDimension(other);
 
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
@@ -68,7 +65,7 @@ public class Vector {
     }
 
     public Vector mult(Vector other) {
-        checkVectorSize(other);
+        checkVectorDimension(other);
 
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
@@ -99,18 +96,58 @@ public class Vector {
         return this.mult(scalar);
     }
 
-    private void checkVectorSize(Vector other) {
-        if (this.numberOfElements() != other.numberOfElements()) {
+    public float sumUp() {
+        float result = 0;
+        for (int i = 0; i < this.elements.length; i++) {
+            result += this.elements[i];
+        }
+
+        return result;
+    }
+
+    private void checkVectorDimension(Vector other) {
+        if (this.getDimension() != other.getDimension()) {
             throw new InvalidParameterException("Vectors must have the same size");
         }
+    }
+
+    public boolean equalsDimension(Vector other) {
+        if (this.getDimension() != other.getDimension())
+            return false;
+        return true;
     }
 
     public float[] toArray() {
         return this.elements.clone();
     }
 
-    public int numberOfElements() {
-        return this.elements.length;
+    // dim([1,2,3,4,5]_T) = 5x1
+    public Dimension getDimension() {
+        return new Dimension(this.elements.length, 1);
+    }
+
+    //--------------------------------------
+    // Generated
+    //--------------------------------------
+
+    @Override
+    public String toString() {
+        return "Vector{" + getDimension() +
+                "elements=" + Arrays.toString(elements) +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector vector = (Vector) o;
+        return Arrays.equals(elements, vector.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(elements);
     }
 
     //--------------------------------------

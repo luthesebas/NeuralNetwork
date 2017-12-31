@@ -1,5 +1,7 @@
 package neuralnetwork.math;
 
+import java.util.Objects;
+
 /**
  *
  */
@@ -27,6 +29,20 @@ public class Dimension {
                 "m=" + m +
                 ", n=" + n +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dimension dimension = (Dimension) o;
+        return m == dimension.m &&
+                n == dimension.n;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(m, n);
     }
 
     //--------------------------------------

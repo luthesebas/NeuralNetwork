@@ -18,9 +18,6 @@ public class Matrix {
         this.rows = Objects.requireNonNull(rows);
     }
 
-    // m x n
-    // rows = m
-    // columns = n
     public Matrix(final int rows, final float... elements) {
         Objects.requireNonNull(elements);
         if (elements.length % rows != 0) { // check for valid dimensions
@@ -41,6 +38,15 @@ public class Matrix {
     //--------------------------------------
     // Methods
     //--------------------------------------
+
+    public Vector multiply(Vector other) {
+        float[] result = new float[this.rows.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = this.rows[i].dot(other);
+        }
+
+        return new Vector(result);
+    }
 
     public Dimension getDimension() {
         return new Dimension(
@@ -67,6 +73,19 @@ public class Matrix {
         return "Matrix{" + getDimension() +
                 "columns=" + Arrays.toString(rows) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Matrix matrix = (Matrix) o;
+        return Arrays.equals(rows, matrix.rows);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(rows);
     }
 
     //--------------------------------------

@@ -52,4 +52,12 @@ class MatrixTest {
         assertArrayEquals(expected, result);
     }
 
+    @Test
+    void multiply() {
+        Vector expected = new Vector(17,39);
+        Vector other = new Vector(5,6);
+        Vector result = a.multiply(other);
+        assertEquals(expected, result);
+    }
+
 }

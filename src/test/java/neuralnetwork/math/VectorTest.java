@@ -74,14 +74,14 @@ class VectorTest {
 
     @Test
     void scale() {
-        Vector expected = new Vector(3, 6, 9);
+        Vector expected = new Vector(3,6,9);
         Vector result = a.scale(3);
         assertEquals(expected, result);
     }
 
     @Test
     void toArray() {
-        float[] expected = new float[]{1f, 2f, 3f};
+        float[] expected = new float[]{1f,2f,3f};
         float[] result = a.toArray();
         assertArrayEquals(expected, result);
     }

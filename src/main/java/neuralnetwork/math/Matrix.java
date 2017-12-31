@@ -8,14 +8,14 @@ import java.util.Objects;
  */
 public class Matrix {
 
-    private final Vector[] columns;
+    private final Vector[] rows;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
-    public Matrix(final Vector[] columns) {
-        this.columns = Objects.requireNonNull(columns);
+    public Matrix(final Vector[] rows) {
+        this.rows = Objects.requireNonNull(rows);
     }
 
     // m x n
@@ -28,16 +28,14 @@ public class Matrix {
         }
 
         int columns = elements.length / rows;
-        this.columns = new Vector[columns];
+        this.rows = new Vector[rows];
 
-        for (int i = 0; i < columns; i++) {
-            float[] tupel = new float[rows];
-            for (int j = 0; j < rows; j++) {
-                int index = i + j * columns;
-                tupel[j] = elements[index];
-            }
-            this.columns[i] = new Vector(tupel);
-        }
+        for (int i = 0; i < rows; i++) {
+            int indexFrom = i * columns;
+            this.rows[i] = new Vector(
+                    Arrays.copyOfRange(elements, indexFrom, indexFrom + columns)
+            );
+        }//for
     }
 
     //--------------------------------------
@@ -45,7 +43,19 @@ public class Matrix {
     //--------------------------------------
 
     public Dimension getDimension() {
-        return new Dimension(this.columns[0].getDimension().getM(), this.columns.length);
+        return new Dimension(
+                this.rows.length,
+                this.rows[0].getDimension().getM()
+        );
+    }
+
+    public float[][] toArray() {
+        Dimension dim = getDimension();
+        float[][] result = new float[dim.getM()][dim.getN()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = this.rows[i].toArray();
+        }
+        return result;
     }
 
     //--------------------------------------
@@ -55,7 +65,7 @@ public class Matrix {
     @Override
     public String toString() {
         return "Matrix{" + getDimension() +
-                "columns=" + Arrays.toString(columns) +
+                "columns=" + Arrays.toString(rows) +
                 '}';
     }
 

@@ -1,13 +1,12 @@
 package neuralnetwork.math;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
  *
  */
-public class Vector {
+public final class Vector {
 
     private final float[] elements;
 
@@ -32,18 +31,17 @@ public class Vector {
         for (int i = 0; i < result.length; i++) {
             result[i] += scalar;
         }
-
         return new Vector(result);
     }
 
     public Vector add(Vector other) {
-        checkVectorDimension(other);
-
+        if (!sameDimension(other)) {
+            throwInvalidDimension(other.getDimension());
+        }
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
             result[i] += other.elements[i];
         }
-
         return new Vector(result);
     }
 
@@ -60,7 +58,6 @@ public class Vector {
         for (int i = 0; i < result.length; i++) {
             result[i] *= scalar;
         }
-
         return new Vector(result);
     }
 
@@ -70,13 +67,14 @@ public class Vector {
      * @return multiplied vector result
      */
     public Vector multiply(Vector other) {
-        checkVectorDimension(other);
+        if (!sameDimension(other)) {
+            throwInvalidDimension(other.getDimension());
+        }
 
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
             result[i] *= other.elements[i];
         }
-
         return new Vector(result);
     }
 
@@ -93,14 +91,22 @@ public class Vector {
         for (float element : this.elements) {
             result += element;
         }
-
         return result;
     }
 
-    private void checkVectorDimension(Vector other) {
+    public boolean sameDimension(Vector other) {
         if (this.getDimension().getM() != other.getDimension().getM()) {
-            throw new InvalidParameterException("Vectors must have the same size");
+            return false;
         }
+        return true;
+    }
+
+    private void throwInvalidDimension(Dimension actual) {
+        throw new InvalidDimension(
+                "Vectors must have the same dimensions." +
+                        " Expected: " + this.getDimension() +
+                        " Actual: " + actual
+        );
     }
 
     public float[] toArray() {
@@ -135,10 +141,5 @@ public class Vector {
     public int hashCode() {
         return Arrays.hashCode(elements);
     }
-
-    //--------------------------------------
-    // Getters and Setters
-    //--------------------------------------
-
 
 }

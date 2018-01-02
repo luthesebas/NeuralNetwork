@@ -1,5 +1,7 @@
 package neuralnetwork.math;
 
+import neuralnetwork.exception.InvalidDimension;
+
 import java.util.Arrays;
 import java.util.Objects;
 

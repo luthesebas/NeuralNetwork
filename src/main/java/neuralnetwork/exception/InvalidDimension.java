@@ -1,4 +1,4 @@
-package neuralnetwork.math;
+package neuralnetwork.exception;
 
 /**
  *

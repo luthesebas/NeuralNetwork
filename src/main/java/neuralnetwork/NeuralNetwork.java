@@ -4,54 +4,54 @@
 package neuralnetwork;
 
 import neuralnetwork.math.Matrix;
+import neuralnetwork.math.Random;
 import neuralnetwork.math.Vector;
-
-import java.util.Random;
 
 /**
  * 
  */
 public class NeuralNetwork {
 
-	private Matrix weightsInput;
-	private Matrix[] weightsHidden;
-	private Matrix weightsOutput;
-
+	private Matrix[] layers;
 	private Vector result;
 	
 	//--------------------------------------
 	// Constructors
 	//--------------------------------------
 
-	public NeuralNetwork(int inputNeurons, int hiddenLayers, int outputNeurons) {
-		this(inputNeurons, hiddenLayers, outputNeurons, new Random());
+	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers) {
+		this(inputNeurons, outputNeurons, hiddenLayers, new Random());
 	}
 
-	public NeuralNetwork(int inputNeurons, int hiddenLayers, int outputNeurons, long seed) {
-		this(inputNeurons, hiddenLayers, outputNeurons, new Random(seed));
+	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, long seed) {
+		this(inputNeurons, outputNeurons, hiddenLayers, new Random(seed));
 	}
 
-	private NeuralNetwork(int inputNeurons, int hiddenLayers, int outputNeurons, final Random rand) {
-		this.weightsInput = new Matrix(2, 1,2,3,4);
-		this.weightsOutput = new Matrix(2, 1,0,0,1);
+	private NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, Random random) {
+		int hiddenRange = outputNeurons * outputNeurons;
 
-		this.weightsHidden = new Matrix[hiddenLayers];
+		this.layers = new Matrix[2 + hiddenLayers];
+		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
+		Matrix outputLayer = new Matrix(outputNeurons, random.range(hiddenRange));
+
 		for (int i = 0; i < hiddenLayers; i++) {
-			this.weightsHidden[i] = new Matrix(2, 1,0,0,1);
+			this.layers[i + 1] = new Matrix(outputNeurons, random.range(hiddenRange));
 		}
+		this.layers[0] = inputLayer;
+		this.layers[this.layers.length - 1] = outputLayer;
 	}
 
 	//--------------------------------------
 	// Methods
 	//--------------------------------------
 
-	public void feedForward(Vector input) {
-		this.result = this.weightsInput.multiply(input);
+	public Vector feedForward(Vector input) {
+		this.result = input;
 		//TODO Activation
-		for (Matrix hiddenLayer : this.weightsHidden) {
-			this.result = hiddenLayer.multiply(this.result);
+		for (Matrix layer : this.layers) {
+			this.result = layer.multiply(this.result);
 		}
-		this.result = this.weightsOutput.multiply(this.result);
+		return this.result;
 	}
 
 	//--------------------------------------

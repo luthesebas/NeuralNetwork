@@ -53,6 +53,10 @@ public class NeuralNetwork {
 		}
 		return this.result;
 	}
+	
+	private Vector calculateError(Vector expected) {
+		return expected.subtract(this.result);
+	}
 
 	//--------------------------------------
 	// Generated

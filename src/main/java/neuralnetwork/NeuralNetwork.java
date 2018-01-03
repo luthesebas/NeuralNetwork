@@ -15,6 +15,8 @@ import java.util.Arrays;
  */
 public class NeuralNetwork {
 
+	private final float EPSILON = 0.01f;
+
 	private Matrix[] layers;
 	private Vector[] results;
 	
@@ -58,6 +60,14 @@ public class NeuralNetwork {
 			this.results[i] = result;
 		}
 		return getResult();
+	}
+
+	public Vector calculateOutputError(Vector expected, Vector actual, Vector net) {
+		return expected.subtract(actual).multiply(net).multiply(EPSILON);
+	}
+
+	private Vector calculateHiddenError() {
+		return null;
 	}
 
 	//--------------------------------------

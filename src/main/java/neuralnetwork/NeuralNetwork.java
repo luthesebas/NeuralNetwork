@@ -7,13 +7,16 @@ import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Random;
 import neuralnetwork.math.Vector;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * 
  */
 public class NeuralNetwork {
 
 	private Matrix[] layers;
-	private Vector result;
+	private Vector[] results;
 	
 	//--------------------------------------
 	// Constructors
@@ -31,6 +34,8 @@ public class NeuralNetwork {
 		int hiddenRange = outputNeurons * outputNeurons;
 
 		this.layers = new Matrix[2 + hiddenLayers];
+		this.results = new Vector[this.layers.length];
+
 		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
 		Matrix outputLayer = new Matrix(outputNeurons, random.range(hiddenRange));
 
@@ -46,16 +51,13 @@ public class NeuralNetwork {
 	//--------------------------------------
 
 	public Vector feedForward(Vector input) {
-		this.result = input;
+		Vector result = input;
 		//TODO Activation
-		for (Matrix layer : this.layers) {
-			this.result = layer.multiply(this.result);
+		for (int i = 0; i < this.layers.length; i++) {
+			result = this.layers[i].multiply(result);
+			this.results[i] = result;
 		}
-		return this.result;
-	}
-	
-	private Vector calculateError(Vector expected) {
-		return expected.subtract(this.result);
+		return getResult();
 	}
 
 	//--------------------------------------
@@ -69,7 +71,7 @@ public class NeuralNetwork {
 	//--------------------------------------
 
 	public Vector getResult() {
-		return this.result;
+		return this.results[this.results.length - 1];
 	}
 
 }

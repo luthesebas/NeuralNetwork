@@ -1,11 +1,11 @@
-package neuralnetwork.math.activation;
+package neuralnetwork.math.function;
 
 import neuralnetwork.math.Vector;
 
 /**
  *
  */
-public class Identity implements IActivationFunction {
+public class Identity implements IFunction {
 
 
     //--------------------------------------
@@ -24,12 +24,12 @@ public class Identity implements IActivationFunction {
      * Returns the input value.
      */
     @Override
-    public float activate(float value) {
+    public float calculate(float value) {
         return value;
     }
 
     @Override
-    public Vector activate(Vector values) {
+    public Vector calculate(Vector values) {
         return values;
     }
 

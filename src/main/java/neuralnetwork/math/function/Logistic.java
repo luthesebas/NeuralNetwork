@@ -1,20 +1,20 @@
-package neuralnetwork.math.activation;
+package neuralnetwork.math.function;
 
 import neuralnetwork.math.Vector;
 
 /**
  *
  */
-public class LogisticDerivative implements IActivationFunction {
+public class Logistic implements IFunction {
 
-    private  Logistic logistic;
+    private final static float E = 2.7182818284590452354f;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
-    public LogisticDerivative() {
-        this.logistic = new Logistic();
+    public Logistic() {
+
     }
 
     //--------------------------------------
@@ -22,16 +22,15 @@ public class LogisticDerivative implements IActivationFunction {
     //--------------------------------------
 
     @Override
-    public float activate(float value) {
-        float a = logistic.activate(value);
-        return a * (1 - a);
+    public float calculate(float value) {
+        return (float) (1 / (1 + Math.pow(E, -value)));
     }
 
     @Override
-    public Vector activate(Vector values) {
+    public Vector calculate(Vector values) {
         float[] result = values.toArray();
         for (int i = 0; i < result.length; i++) {
-            result[i] = activate(result[i]);
+            result[i] = calculate(result[i]);
         }
         return new Vector(result);
     }

@@ -1,19 +1,18 @@
-package neuralnetwork.math.activation;
+package neuralnetwork.math.function;
 
 import neuralnetwork.math.Vector;
 
 /**
  *
  */
-public class Logistic implements IActivationFunction {
+public class BinaryStep implements IFunction {
 
-    private final static float E = 2.7182818284590452354f;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
-    public Logistic() {
+    public BinaryStep() {
 
     }
 
@@ -21,16 +20,24 @@ public class Logistic implements IActivationFunction {
     // Methods
     //--------------------------------------
 
+    /**
+     * Returns -1 for x < 0 and
+     * returns 1 for x >= 0.
+     */
     @Override
-    public float activate(float value) {
-        return (float) (1 / (1 + Math.pow(E, -value)));
+    public float calculate(float value) {
+        if (value < 0) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     @Override
-    public Vector activate(Vector values) {
+    public Vector calculate(Vector values) {
         float[] result = values.toArray();
         for (int i = 0; i < result.length; i++) {
-            result[i] = activate(result[i]);
+            result[i] = calculate(result[i]);
         }
         return new Vector(result);
     }

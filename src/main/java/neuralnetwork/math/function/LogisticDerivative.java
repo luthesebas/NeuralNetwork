@@ -1,43 +1,37 @@
-package neuralnetwork.math.activation;
+package neuralnetwork.math.function;
 
 import neuralnetwork.math.Vector;
 
 /**
  *
  */
-public class BinaryStep implements IActivationFunction {
+public class LogisticDerivative implements IFunction {
 
+    private  Logistic logistic;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
-    public BinaryStep() {
-
+    public LogisticDerivative() {
+        this.logistic = new Logistic();
     }
 
     //--------------------------------------
     // Methods
     //--------------------------------------
 
-    /**
-     * Returns -1 for x < 0 and
-     * returns 1 for x >= 0.
-     */
     @Override
-    public float activate(float value) {
-        if (value < 0) {
-            return -1;
-        } else {
-            return 1;
-        }
+    public float calculate(float value) {
+        float a = logistic.calculate(value);
+        return a * (1 - a);
     }
 
     @Override
-    public Vector activate(Vector values) {
+    public Vector calculate(Vector values) {
         float[] result = values.toArray();
         for (int i = 0; i < result.length; i++) {
-            result[i] = activate(result[i]);
+            result[i] = calculate(result[i]);
         }
         return new Vector(result);
     }

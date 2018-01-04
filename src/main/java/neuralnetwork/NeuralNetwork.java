@@ -40,7 +40,7 @@ public class NeuralNetwork {
 		int hiddenRange = outputNeurons * outputNeurons;
 
 		this.layers = new Matrix[1 + hiddenLayers];
-		this.outputs = new Vector[this.layers.length];
+		this.outputs = new Vector[1 + this.layers.length];
 		this.weightedInputs = new Vector[this.layers.length];
 
 		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
@@ -59,10 +59,13 @@ public class NeuralNetwork {
 
 	public Vector feedForward(Vector input) {
 		Vector weightedInput = input;
-		for (int i = 0; i < this.layers.length; i++) {
+		this.outputs[0] = input; // Add input to outputs
+
+		int i = 0;
+		while (i < this.layers.length) {
 			weightedInput = this.layers[i].multiply(weightedInput);
 			this.weightedInputs[i] = weightedInput;
-			this.outputs[i] = this.activation.calculate(weightedInput);
+			this.outputs[++i] = this.activation.calculate(weightedInput);
 		}
 		return this.outputs[this.outputs.length - 1];
 	}

@@ -58,7 +58,7 @@ public class NeuralNetwork {
 			this.weightedInputs[i] = weightedInput;
 			this.outputs[i] = weightedInput; //TODO Activation
 		}
-		return getResult();
+		return this.outputs[this.outputs.length - 1];
 	}
 
 	public Vector calculateOutputError(Vector expected, Vector actual, Vector net) {

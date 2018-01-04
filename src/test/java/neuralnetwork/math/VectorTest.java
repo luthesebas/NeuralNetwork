@@ -53,6 +53,13 @@ class VectorTest {
     }
 
     @Test
+    void multiplyT() {
+        Matrix expected = new Matrix(2, 1,2,3,2,4,6);
+        Matrix result = new Vector(1,2).multiplyT((new Vector(true, 1,2,3)));
+        assertEquals(expected, result);
+    }
+
+    @Test
     void dot() {
         float expected = 10;
         float result = a.dot(b);
@@ -86,4 +93,5 @@ class VectorTest {
         float[] result = a.toArray();
         assertArrayEquals(expected, result);
     }
+
 }

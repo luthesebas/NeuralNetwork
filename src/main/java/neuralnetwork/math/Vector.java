@@ -24,6 +24,21 @@ public final class Vector {
     // Constructors
     //--------------------------------------
 
+    public Vector(Dimension dimension, float value) {
+        this.elements = new float[dimension.getM()];
+        for (int i = 0; i < this.elements.length; i++) {
+            this.elements[i] = value;
+        }
+    }
+
+    public Vector(Dimension dimension, float value, boolean transposed) {
+        this.elements = new float[dimension.getM()];
+        for (int i = 0; i < this.elements.length; i++) {
+            this.elements[i] = value;
+        }
+        this.transposed = transposed;
+    }
+
     public Vector(float... elements) {
         this.elements = Objects.requireNonNull(elements);
     }

@@ -7,9 +7,6 @@ import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Random;
 import neuralnetwork.math.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * 
  */
@@ -18,7 +15,8 @@ public class NeuralNetwork {
 	private final float EPSILON = 0.01f;
 
 	private Matrix[] layers;
-	private Vector[] results;
+	private Vector[] outputs;
+	private Vector[] weightedInputs;
 	
 	//--------------------------------------
 	// Constructors
@@ -36,7 +34,8 @@ public class NeuralNetwork {
 		int hiddenRange = outputNeurons * outputNeurons;
 
 		this.layers = new Matrix[2 + hiddenLayers];
-		this.results = new Vector[this.layers.length];
+		this.outputs = new Vector[this.layers.length];
+		this.weightedInputs = new Vector[this.layers.length];
 
 		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
 		Matrix outputLayer = new Matrix(outputNeurons, random.range(hiddenRange));
@@ -53,11 +52,11 @@ public class NeuralNetwork {
 	//--------------------------------------
 
 	public Vector feedForward(Vector input) {
-		Vector result = input;
-		//TODO Activation
+		Vector weightedInput = input;
 		for (int i = 0; i < this.layers.length; i++) {
-			result = this.layers[i].multiply(result);
-			this.results[i] = result;
+			weightedInput = this.layers[i].multiply(weightedInput);
+			this.weightedInputs[i] = weightedInput;
+			this.outputs[i] = weightedInput; //TODO Activation
 		}
 		return getResult();
 	}
@@ -81,7 +80,7 @@ public class NeuralNetwork {
 	//--------------------------------------
 
 	public Vector getResult() {
-		return this.results[this.results.length - 1];
+		return this.outputs[this.outputs.length - 1];
 	}
 
 }

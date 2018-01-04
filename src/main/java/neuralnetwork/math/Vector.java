@@ -18,6 +18,7 @@ public final class Vector {
     public static final Vector VECTOR_3D_UNIT_3 = new Vector(0,0,1);
 
     private final float[] elements;
+    private Dimension dimension;
     private boolean transposed;
 
     //--------------------------------------
@@ -29,18 +30,17 @@ public final class Vector {
         for (int i = 0; i < this.elements.length; i++) {
             this.elements[i] = value;
         }
+        updateDimension();
     }
 
     public Vector(Dimension dimension, float value, boolean transposed) {
-        this.elements = new float[dimension.getM()];
-        for (int i = 0; i < this.elements.length; i++) {
-            this.elements[i] = value;
-        }
+        this(dimension, value);
         this.transposed = transposed;
     }
 
     public Vector(float... elements) {
         this.elements = Objects.requireNonNull(elements);
+        updateDimension();
     }
 
     public Vector(boolean transposed, float... elements) {
@@ -56,8 +56,10 @@ public final class Vector {
         return this.transposed;
     }
 
-    public void transpose() {
+    public Vector transpose() {
         this.transposed = !this.transposed;
+        updateDimension();
+        return this;
     }
 
     public Vector negate() {
@@ -172,12 +174,16 @@ public final class Vector {
         return this.elements.clone();
     }
 
-    // dim([1,2,3,4,5]_T) = 5x1
     public Dimension getDimension() {
+        return this.dimension;
+    }
+
+    public void updateDimension() {
         if (this.transposed) {
-            return new Dimension(1, this.elements.length);
+            this.dimension = new Dimension(1, this.elements.length);
+        } else {
+            this.dimension = new Dimension(this.elements.length, 1);
         }
-        return new Dimension(this.elements.length, 1);
     }
 
     //--------------------------------------

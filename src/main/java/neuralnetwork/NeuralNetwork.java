@@ -70,11 +70,34 @@ public class NeuralNetwork {
 		return this.outputs[this.outputs.length - 1];
 	}
 
-	public Vector calculateOutputError(Vector expected, Vector actual, Vector net) {
-		return expected.subtract(actual).multiply(net).multiply(EPSILON);
+	private void adjustWeights(Vector expected, Vector actual) {
+		//TODO
+		// Vector expected --> label[i] of fit(Vector[] inputs, Vector[] labels)
+		// Vector actual --> return of feedForward(inputs[i])
+		//Vector layerInput = this.outputs[i - 1]; // this.outputs must contain the forwarded input
+
+		Matrix dWeightOutput = calculateOutputError(expected, actual, new Vector(true,0.761f,0.45f));
+		System.out.println(dWeightOutput);
+
 	}
 
-	private Vector calculateHiddenError() {
+	private  Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput) {
+		return calculateOutputPhi(expected, actual).multiply(EPSILON).multiplyT(layerInput);
+	}
+
+	private Vector calculateOutputPhi(Vector expected, Vector actual) {
+		//TODO
+		Vector absError = expected.subtract(actual);
+		Vector fStrichX = this.outputs[this.outputs.length - 1] = new Vector(0.655f, 0.55f);
+		Vector eins = new Vector(fStrichX.getDimension(), 1);
+		Vector fStrich = eins.subtract(fStrichX).multiply(fStrichX);
+
+		Vector phi = fStrich.multiply(absError);
+		return phi;
+	}
+
+	private Vector calculateHiddenPhi() {
+		//TODO
 		return null;
 	}
 

@@ -70,18 +70,18 @@ public class NeuralNetwork {
 		return this.outputs[this.outputs.length - 1];
 	}
 
-	private void adjustWeights(Vector expected, Vector actual) {
+	//TODO private - just for testing public
+	public Matrix adjustWeights(Vector expected, Vector actual) {
 		//TODO
 		// Vector expected --> label[i] of fit(Vector[] inputs, Vector[] labels)
 		// Vector actual --> return of feedForward(inputs[i])
 		//Vector layerInput = this.outputs[i - 1]; // this.outputs must contain the forwarded input
 
 		Matrix dWeightOutput = calculateOutputError(expected, actual, new Vector(true,0.761f,0.45f));
-		System.out.println(dWeightOutput);
-
+		return dWeightOutput;
 	}
 
-	private  Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput) {
+	private Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput) {
 		return calculateOutputPhi(expected, actual).multiply(EPSILON).multiplyT(layerInput);
 	}
 

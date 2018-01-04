@@ -94,6 +94,23 @@ public final class Vector {
         return new Vector(result);
     }
 
+    /**
+     *
+     * @param other
+     * @return
+     */
+    public Matrix multiplyT(Vector other) {
+        if (this.isTransposed() || !other.isTransposed()) {
+            throwInvalidDimension(this.getDimension(), other.getDimension());
+        }
+
+        Vector[] result = new Vector[this.elements.length]; // empty rows
+        for (int i = 0; i < result.length; i++) {
+            result[i] = other.multiply(this.elements[i]); // rows
+        }
+        return new Matrix(result);
+    }
+
     public float dot(Vector other) {
         return this.multiply(other).sumUp();
     }

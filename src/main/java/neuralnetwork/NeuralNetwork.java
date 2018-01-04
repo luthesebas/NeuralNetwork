@@ -6,6 +6,10 @@ package neuralnetwork;
 import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Random;
 import neuralnetwork.math.Vector;
+import neuralnetwork.math.function.IFunction;
+import neuralnetwork.math.function.Logistic;
+
+import java.util.Objects;
 
 /**
  * 
@@ -13,6 +17,7 @@ import neuralnetwork.math.Vector;
 public class NeuralNetwork {
 
 	private final float EPSILON = 0.01f;
+	private IFunction activation;
 
 	private Matrix[] layers;
 	private Vector[] outputs;
@@ -31,9 +36,10 @@ public class NeuralNetwork {
 	}
 
 	private NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, Random random) {
+		this.activation = new Logistic();
 		int hiddenRange = outputNeurons * outputNeurons;
 
-		this.layers = new Matrix[2 + hiddenLayers];
+		this.layers = new Matrix[1 + hiddenLayers];
 		this.outputs = new Vector[this.layers.length];
 		this.weightedInputs = new Vector[this.layers.length];
 
@@ -56,7 +62,7 @@ public class NeuralNetwork {
 		for (int i = 0; i < this.layers.length; i++) {
 			weightedInput = this.layers[i].multiply(weightedInput);
 			this.weightedInputs[i] = weightedInput;
-			this.outputs[i] = weightedInput; //TODO Activation
+			this.outputs[i] = this.activation.calculate(weightedInput);
 		}
 		return this.outputs[this.outputs.length - 1];
 	}
@@ -71,8 +77,8 @@ public class NeuralNetwork {
 
 	public Vector classify(Vector input) {
 		Vector output = input;
-		for (int i = 0; i < this.layers.length; i++) {
-			output = this.layers[i].multiply(output);
+		for (Matrix layer : this.layers) {
+			output = layer.multiply(output);
 			output = output; //TODO Activation
 		}
 		return output;
@@ -88,6 +94,11 @@ public class NeuralNetwork {
 	// Getters and Setters
 	//--------------------------------------
 
+	public void setActivation(IFunction activation) {
+		this.activation = Objects.requireNonNull(activation);
+	}
 
-
+	public IFunction getActivation() {
+		return this.activation;
+	}
 }

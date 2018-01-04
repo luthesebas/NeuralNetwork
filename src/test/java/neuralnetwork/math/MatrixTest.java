@@ -61,4 +61,10 @@ class MatrixTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    void getColumn() {
+        Vector expected = new Vector(1,3,5);
+        Vector result = b.getColumn(0);
+        assertEquals(expected, result);
+    }
 }

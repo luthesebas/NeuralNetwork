@@ -48,6 +48,14 @@ public class Matrix {
         return new Vector(result);
     }
 
+    public Vector getColumn(int index) {
+        float[] result = new float[this.rows.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = this.rows[i].getElement(index);
+        }
+        return new Vector(result);
+    }
+
     public Dimension getDimension() {
         return new Dimension(
                 this.rows.length,

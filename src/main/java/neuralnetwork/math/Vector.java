@@ -142,6 +142,10 @@ public final class Vector {
         );
     }
 
+    public float getElement(int index) {
+        return this.elements[index];
+    }
+
     public float[] toArray() {
         return this.elements.clone();
     }

@@ -10,6 +10,13 @@ import java.util.Objects;
  */
 public final class Vector {
 
+    public static final Vector VECTOR_1D_UNIT = new Vector(1);
+    public static final Vector VECTOR_2D_UNIT_1 = new Vector(1,0);
+    public static final Vector VECTOR_2D_UNIT_2 = new Vector(0,1);
+    public static final Vector VECTOR_3D_UNIT_1 = new Vector(1,0,0);
+    public static final Vector VECTOR_3D_UNIT_2 = new Vector(0,1,0);
+    public static final Vector VECTOR_3D_UNIT_3 = new Vector(0,0,1);
+
     private final float[] elements;
     private boolean transposed;
 

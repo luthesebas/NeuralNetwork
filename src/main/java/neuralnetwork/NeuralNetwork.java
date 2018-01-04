@@ -69,6 +69,15 @@ public class NeuralNetwork {
 		return null;
 	}
 
+	public Vector classify(Vector input) {
+		Vector output = input;
+		for (int i = 0; i < this.layers.length; i++) {
+			output = this.layers[i].multiply(output);
+			output = output; //TODO Activation
+		}
+		return output;
+	}
+
 	//--------------------------------------
 	// Generated
 	//--------------------------------------

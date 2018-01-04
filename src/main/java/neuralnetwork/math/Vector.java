@@ -11,6 +11,7 @@ import java.util.Objects;
 public final class Vector {
 
     private final float[] elements;
+    private boolean transposed;
 
     //--------------------------------------
     // Constructors
@@ -20,9 +21,22 @@ public final class Vector {
         this.elements = Objects.requireNonNull(elements);
     }
 
+    public Vector(boolean transposed, float... elements) {
+        this(elements);
+        this.transposed = transposed;
+    }
+
     //--------------------------------------
     // Methods
     //--------------------------------------
+
+    public boolean isTransposed() {
+        return this.transposed;
+    }
+
+    public void transpose() {
+        this.transposed = !this.transposed;
+    }
 
     public Vector negate() {
         return this.multiply(-1);
@@ -37,8 +51,8 @@ public final class Vector {
     }
 
     public Vector add(Vector other) {
-        if (!sameDimension(other)) {
-            throwInvalidDimension(other.getDimension());
+        if (!validDimension(other)) {
+            throwInvalidDimension(this.getDimension(), other.getDimension());
         }
         float[] result = this.toArray();
         for (int i = 0; i < result.length; i++) {
@@ -69,8 +83,8 @@ public final class Vector {
      * @return multiplied vector result
      */
     public Vector multiply(Vector other) {
-        if (!sameDimension(other)) {
-            throwInvalidDimension(other.getDimension());
+        if (!validDimension(other)) {
+            throwInvalidDimension(this.getDimension(), other.getDimension());
         }
 
         float[] result = this.toArray();
@@ -96,17 +110,17 @@ public final class Vector {
         return result;
     }
 
-    public boolean sameDimension(Vector other) {
+    public boolean validDimension(Vector other) {
         if (this.getDimension().getM() != other.getDimension().getM()) {
             return false;
         }
         return true;
     }
 
-    private void throwInvalidDimension(Dimension actual) {
+    private void throwInvalidDimension(Dimension expected, Dimension actual) {
         throw new InvalidDimension(
                 "Vectors must have the same dimensions." +
-                        " Expected: " + this.getDimension() +
+                        " Expected: " +expected +
                         " Actual: " + actual
         );
     }

@@ -88,8 +88,6 @@ public class NeuralNetwork {
 	// Getters and Setters
 	//--------------------------------------
 
-	public Vector getResult() {
-		return this.outputs[this.outputs.length - 1];
-	}
+
 
 }

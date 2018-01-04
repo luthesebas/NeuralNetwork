@@ -101,7 +101,7 @@ public final class Vector {
      */
     public Matrix multiplyT(Vector other) {
         if (this.isTransposed() || !other.isTransposed()) {
-            throwInvalidDimension(this.getDimension(), other.getDimension());
+            throwInvalidDimension(this.getDimension().swap(), other.getDimension());
         }
 
         Vector[] result = new Vector[this.elements.length]; // empty rows
@@ -148,6 +148,9 @@ public final class Vector {
 
     // dim([1,2,3,4,5]_T) = 5x1
     public Dimension getDimension() {
+        if (this.transposed) {
+            return new Dimension(1, this.elements.length);
+        }
         return new Dimension(this.elements.length, 1);
     }
 

@@ -22,7 +22,7 @@ public class Dimension {
     //--------------------------------------
     // Methods
     //--------------------------------------
-    
+
     public Dimension swap() {
         return new Dimension(this.n, this.m);
     }

@@ -2,6 +2,7 @@ package neuralnetwork;
 
 import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Vector;
+import neuralnetwork.math.function.Logistic;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +14,17 @@ class NeuralNetworkTest {
         Vector expected = new Vector(0.9999362f, 0.9999871f);
         Vector input = new Vector(5,6,7);
         NeuralNetwork brain = new NeuralNetwork(3,2, 1, 100);
+        Vector result = brain.feedForward(input);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void feedForward1() {
+        Vector expected = new Vector(0.6061278f, 0.54213375f);
+        Vector input = new Vector(0.7f,0.6f);
+        Matrix layer0 = new Matrix(2, 0.8f, 0.5f, -0.6f, 0.7f);
+        Matrix layer1 = new Matrix(2, 0.4f, 0.3f, -0.4f, 0.9f);
+        NeuralNetwork brain = new NeuralNetwork(layer0, layer1);
         Vector result = brain.feedForward(input);
         assertEquals(expected, result);
     }

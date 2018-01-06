@@ -53,19 +53,24 @@ public class NeuralNetwork {
 		this.layers[this.layers.length - 1] = outputLayer;
 	}
 
+	public NeuralNetwork(Matrix... layers) {
+		this.activation = new Logistic();
+		this.layers = layers;
+		this.outputs = new Vector[1 + this.layers.length];
+		this.weightedInputs = new Vector[this.layers.length];
+	}
+
 	//--------------------------------------
 	// Methods
 	//--------------------------------------
 
 	public Vector feedForward(Vector input) {
-		Vector weightedInput = input;
 		this.outputs[0] = input; // Add input to outputs
 
 		int i = 0;
 		while (i < this.layers.length) {
-			weightedInput = this.layers[i].multiply(weightedInput);
-			this.weightedInputs[i] = weightedInput;
-			this.outputs[++i] = this.activation.calculate(weightedInput);
+			this.weightedInputs[i] = input = this.layers[i].multiply(input);
+			this.outputs[++i] = input = this.activation.calculate(input);
 		}
 		return this.outputs[this.outputs.length - 1];
 	}
@@ -76,6 +81,7 @@ public class NeuralNetwork {
 		// Vector expected --> label[i] of fit(Vector[] inputs, Vector[] labels)
 		// Vector actual --> return of feedForward(inputs[i])
 		//Vector layerInput = this.outputs[i - 1]; // this.outputs must contain the forwarded input
+		this.outputs[this.outputs.length - 1] = new Vector(0.655f, 0.55f);
 
 		Matrix dWeightOutput = calculateOutputError(expected, actual, new Vector(true,0.761f,0.45f));
 		return dWeightOutput;
@@ -88,7 +94,7 @@ public class NeuralNetwork {
 	private Vector calculateOutputPhi(Vector expected, Vector actual) {
 		//TODO
 		Vector absError = expected.subtract(actual);
-		Vector fStrichX = this.outputs[this.outputs.length - 1] = new Vector(0.655f, 0.55f);
+		Vector fStrichX = this.outputs[this.outputs.length - 1];
 		Vector eins = new Vector(fStrichX.getDimension(), 1);
 		Vector fStrich = eins.subtract(fStrichX).multiply(fStrichX);
 

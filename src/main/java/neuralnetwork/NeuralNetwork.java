@@ -27,6 +27,17 @@ public class NeuralNetwork {
 	// Constructors
 	//--------------------------------------
 
+	public NeuralNetwork(Matrix... layers) {
+		this(new Logistic(), layers);
+	}
+
+	public NeuralNetwork(IFunction activation, Matrix... layers) {
+		this.activation = Objects.requireNonNull(activation);
+		this.layers = Objects.requireNonNull(layers);
+		this.outputs = new Vector[1 + this.layers.length];
+		this.weightedInputs = new Vector[this.layers.length];
+	}
+
 	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers) {
 		this(inputNeurons, outputNeurons, hiddenLayers, new Random());
 	}
@@ -51,13 +62,6 @@ public class NeuralNetwork {
 		}
 		this.layers[0] = inputLayer;
 		this.layers[this.layers.length - 1] = outputLayer;
-	}
-
-	public NeuralNetwork(Matrix... layers) {
-		this.activation = new Logistic();
-		this.layers = layers;
-		this.outputs = new Vector[1 + this.layers.length];
-		this.weightedInputs = new Vector[this.layers.length];
 	}
 
 	//--------------------------------------

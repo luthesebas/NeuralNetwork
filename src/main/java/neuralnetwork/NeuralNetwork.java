@@ -92,21 +92,20 @@ public class NeuralNetwork {
 		// Vector layerInput = outputs[i - 1]; // outputs must contain the forwarded input
 		// Vector layerOutput = outputs[i];
 
+		Vector net = new Vector(0.639f, 0.2f); // weightedInputs[i]
+
 		Matrix dWeightOutput = calculateOutputError(
-				expected, actual, new Vector(true,0.761f,0.45f), DEFAULT_EPSILON);
+				expected, actual, net,
+				new Vector(true,0.761f,0.45f), DEFAULT_EPSILON);
 		return dWeightOutput;
 	}
 
-	private Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput, float epsilon) {
-		Vector phi = calculateOutputPhi(expected, actual);
-		return phi.multiply(epsilon).multiplyT(layerInput);
-	}
-
-	private Vector calculateOutputPhi(Vector expected, Vector actual) {
+	private Matrix calculateOutputError(Vector expected, Vector actual, Vector net, Vector layerInput, float epsilon) {
+		if (this.activation instanceof Logistic) { net = null; }
 		Vector absError = expected.subtract(actual);
-		Vector oneVector = new Vector(actual.getDimension(), 1);
-		Vector derivation = oneVector.subtract(actual).multiply(actual);
-		return derivation.multiply(absError); // phi
+		Vector derivation = this.activation.derivative(net, actual);
+		Vector phi = derivation.multiply(absError);
+		return phi.multiply(epsilon).multiplyT(layerInput);
 	}
 
 	private Vector calculateHiddenPhi() {

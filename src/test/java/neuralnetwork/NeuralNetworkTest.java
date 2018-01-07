@@ -13,7 +13,7 @@ class NeuralNetworkTest {
         Vector expected = new Vector(0.74674326f, 0.7892308f);
         Vector input = new Vector(5,6,7);
         NeuralNetwork brain = new NeuralNetwork(3,2, 1, 100);
-        Vector result = brain.feedForward(input);
+        Vector result = brain.feedForward(input, new Vector[2], new Vector[3]);
         assertEquals(expected, result);
     }
 
@@ -24,16 +24,16 @@ class NeuralNetworkTest {
         Matrix layer0 = new Matrix(2, 0.8f, 0.5f, -0.6f, 0.7f);
         Matrix layer1 = new Matrix(2, 0.4f, 0.3f, -0.4f, 0.9f);
         NeuralNetwork brain = new NeuralNetwork(layer0, layer1);
-        Vector result = brain.feedForward(input);
+        Vector result = brain.feedForward(input, new Vector[2], new Vector[3]);
         assertEquals(expected, result);
     }
 
     @Test
-    public void deltaWeights() {
+    public void calculateLayerWeightShift() {
         Matrix expected = new Matrix(2, 4.213191E-4f, 2.4913746E-4f, -6.592163E-4f, -3.898125E-4f);
         NeuralNetwork brain = new NeuralNetwork(3,2, 1, 100);
-        Matrix result = brain.deltaWeights(new Vector(0.9f,0.2f), new Vector(0.655f,0.55f));
-        assertEquals(expected, result);
+        Matrix[] result = brain.calculateLayerWeightShift(new Vector(0.9f,0.2f), new Vector(0.655f,0.55f), NeuralNetwork.DEFAULT_EPSILON);
+        assertEquals(expected, result[0]);
     }
 
 }

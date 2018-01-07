@@ -58,30 +58,58 @@ public class NeuralNetwork {
 	}
 
 	//--------------------------------------
-	// Methods
+	// Public Methods
 	//--------------------------------------
 
-
-
-	public Vector feedForward(Vector input) {
+	public Vector classify(final Vector input) {
 		Vector output = input;
-		Vector[] weightedInputs = new Vector[this.layers.length];
-		Vector[] outputs = new Vector[this.layers.length + 1];
-
-		outputs[0] = output; // Add input to outputs
-		for (int i = 0; i < this.layers.length;) {
-			weightedInputs[i] = output = this.layers[i].multiply(output);
-			outputs[++i] = output = this.activation.calculate(output);
+		for (Matrix layer : this.layers) {
+			output = layer.multiply(output);
+			output = this.activation.calculate(output);
 		}
-		return outputs[outputs.length - 1];
+		return output;
 	}
 
-	public void fit(Vector[] inputs, Vector[] labels) {
+	public void fit(final Vector[] inputs, final Vector[] labels) {
+		fit(inputs, labels, DEFAULT_EPSILON);
+	}
+
+	public void fit(final Vector[] inputs, final Vector[] labels, float learningRate) {
 		//TODO
+		if (inputs.length != labels.length)
+			throw new RuntimeException("Number of inputs must be equal to the number of labels");
+
+		Vector[] layerNets = new Vector[this.layers.length];
+		Vector[] layerOuts = new Vector[this.layers.length + 1];
+
+		for (int i = 0; i < inputs.length; i++) {
+			Vector result = feedForward(inputs[i], layerNets, layerOuts);
+			propagateBack(labels[i], result, learningRate);
+		}
+	}
+
+	//--------------------------------------
+	// Internal Methods
+	//--------------------------------------
+
+	//TODO private - just for testing public
+	public Vector feedForward(Vector input, Vector[] layerNets, Vector[] layerOuts) {
+		Vector output = input;
+		layerOuts[0] = output; // Add input to outputs
+		for (int i = 0; i < this.layers.length;) {
+			layerNets[i] = output = this.layers[i].multiply(output);
+			layerOuts[++i] = output = this.activation.calculate(output);
+		}
+		return layerOuts[layerOuts.length - 1];
+	}
+
+	private void propagateBack(Vector expected, Vector actual, float learningRate) {
+		//TODO for all layers add delta weights
+		Matrix[] deltaWeights = calculateLayerWeightShift(expected, actual, learningRate);
 	}
 
 	//TODO private - just for testing public
-	public Matrix deltaWeights(Vector expected, Vector actual) {
+	public Matrix[] calculateLayerWeightShift(Vector expected, Vector actual, float learningRate) {
 
 		Vector[] weightedInputs = new Vector[this.layers.length];
 		Vector[] outputs = new Vector[this.layers.length + 1];
@@ -93,11 +121,14 @@ public class NeuralNetwork {
 		// Vector layerOutput = outputs[i];
 
 		Vector net = new Vector(0.639f, 0.2f); // weightedInputs[i]
+		Vector layerInput = new Vector(true,0.761f,0.45f);
 
-		Matrix dWeightOutput = calculateOutputError(
-				expected, actual, net,
-				new Vector(true,0.761f,0.45f), DEFAULT_EPSILON);
-		return dWeightOutput;
+		Matrix[] deltaLayerWeights = new Matrix[this.layers.length];
+		deltaLayerWeights[0] = calculateOutputError(expected, actual, net, layerInput, learningRate);
+
+
+
+		return deltaLayerWeights;
 	}
 
 	private Matrix calculateOutputError(Vector expected, Vector actual, Vector net, Vector layerInput, float epsilon) {
@@ -111,15 +142,6 @@ public class NeuralNetwork {
 	private Vector calculateHiddenPhi() {
 		//TODO
 		return null;
-	}
-
-	public Vector classify(final Vector input) {
-		Vector output = input;
-		for (Matrix layer : this.layers) {
-			output = layer.multiply(output);
-			output = this.activation.calculate(output);
-		}
-		return output;
 	}
 
 	//--------------------------------------

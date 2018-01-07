@@ -104,7 +104,7 @@ public final class Vector {
     /**
      * Not summed up dot product.
      * @param other the vector with which is multiplied
-     * @return multiplied vector result
+     * @return the vector result of the multiplication
      */
     public Vector multiply(Vector other) {
         if (!validDimension(other)) {
@@ -119,9 +119,9 @@ public final class Vector {
     }
 
     /**
-     *
-     * @param other
-     * @return
+     * Multiplies the vector with an transposed vector.
+     * @param other the vector with which is multiplied
+     * @return the matrix result of the multiplication
      */
     public Matrix multiplyT(Vector other) {
         if (this.isTransposed() || !other.isTransposed()) {
@@ -152,10 +152,7 @@ public final class Vector {
     }
 
     public boolean validDimension(Vector other) {
-        if (this.getDimension().getM() != other.getDimension().getM()) {
-            return false;
-        }
-        return true;
+        return this.getDimension().getM() == other.getDimension().getM();
     }
 
     private void throwInvalidDimension(Dimension expected, Dimension actual) {
@@ -178,7 +175,7 @@ public final class Vector {
         return this.dimension;
     }
 
-    public void updateDimension() {
+    private void updateDimension() {
         if (this.transposed) {
             this.dimension = new Dimension(1, this.elements.length);
         } else {

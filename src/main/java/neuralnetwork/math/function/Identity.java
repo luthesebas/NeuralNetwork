@@ -21,16 +21,36 @@ public class Identity implements IFunction {
     //--------------------------------------
 
     /**
-     * Returns the input value.
+     * Returns the input x.
      */
     @Override
-    public float calculate(float value) {
-        return value;
+    public float calculate(float x) {
+        return x;
     }
 
     @Override
-    public Vector calculate(Vector values) {
-        return values;
+    public float derivative(float x) {
+        return 1;
+    }
+
+    @Override
+    public float derivative(float x, float f) {
+        return 1;
+    }
+
+    @Override
+    public Vector calculate(Vector x) {
+        return x;
+    }
+
+    @Override
+    public Vector derivative(Vector x) {
+        return new Vector(x.getDimension(), 1);
+    }
+
+    @Override
+    public Vector derivative(Vector x, Vector f) {
+        return new Vector(x.getDimension(), 1);
     }
 
     //--------------------------------------

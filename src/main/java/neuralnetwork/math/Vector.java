@@ -94,7 +94,7 @@ public final class Vector {
     }
 
     public Vector multiply(float scalar) {
-        float[] result = this.toArray();
+        float[] result = this.toArray().clone();
         for (int i = 0; i < result.length; i++) {
             result[i] *= scalar;
         }
@@ -111,7 +111,7 @@ public final class Vector {
             throwInvalidDimension(this.getDimension(), other.getDimension());
         }
 
-        float[] result = this.toArray();
+        float[] result = this.toArray().clone();
         for (int i = 0; i < result.length; i++) {
             result[i] *= other.elements[i];
         }
@@ -168,7 +168,7 @@ public final class Vector {
     }
 
     public float[] toArray() {
-        return this.elements.clone();
+        return this.elements;
     }
 
     public Dimension getDimension() {

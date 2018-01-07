@@ -111,11 +111,11 @@ public class NeuralNetwork {
 		return null;
 	}
 
-	public Vector classify(Vector input) {
+	public Vector classify(final Vector input) {
 		Vector output = input;
 		for (Matrix layer : this.layers) {
 			output = layer.multiply(output);
-			output = output; //TODO Activation
+			output = this.activation.calculate(output);
 		}
 		return output;
 	}

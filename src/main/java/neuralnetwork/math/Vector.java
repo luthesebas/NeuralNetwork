@@ -25,6 +25,11 @@ public final class Vector {
     // Constructors
     //--------------------------------------
 
+    public Vector(Dimension dimension) {
+        this.elements = new float[dimension.getM()];
+        updateDimension();
+    }
+
     public Vector(Dimension dimension, float value) {
         this.elements = new float[dimension.getM()];
         for (int i = 0; i < this.elements.length; i++) {

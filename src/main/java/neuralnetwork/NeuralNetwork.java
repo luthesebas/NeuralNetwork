@@ -16,12 +16,10 @@ import java.util.Objects;
  */
 public class NeuralNetwork {
 
-	private final float EPSILON = 0.01f;
-	private IFunction activation;
+	public static final float DEFAULT_EPSILON = 0.01f;
 
-	private Matrix[] layers;
-	private Vector[] outputs;
-	private Vector[] weightedInputs;
+	private final IFunction activation;
+	private final Matrix[] layers;
 	
 	//--------------------------------------
 	// Constructors
@@ -34,8 +32,6 @@ public class NeuralNetwork {
 	public NeuralNetwork(IFunction activation, Matrix... layers) {
 		this.activation = Objects.requireNonNull(activation);
 		this.layers = Objects.requireNonNull(layers);
-		this.outputs = new Vector[1 + this.layers.length];
-		this.weightedInputs = new Vector[this.layers.length];
 	}
 
 	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers) {
@@ -51,9 +47,6 @@ public class NeuralNetwork {
 		int hiddenRange = outputNeurons * outputNeurons;
 
 		this.layers = new Matrix[1 + hiddenLayers];
-		this.outputs = new Vector[1 + this.layers.length];
-		this.weightedInputs = new Vector[this.layers.length];
-
 		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
 		Matrix outputLayer = new Matrix(outputNeurons, random.range(hiddenRange));
 
@@ -68,42 +61,52 @@ public class NeuralNetwork {
 	// Methods
 	//--------------------------------------
 
-	public Vector feedForward(Vector input) {
-		this.outputs[0] = input; // Add input to outputs
 
-		int i = 0;
-		while (i < this.layers.length) {
-			this.weightedInputs[i] = input = this.layers[i].multiply(input);
-			this.outputs[++i] = input = this.activation.calculate(input);
+
+	public Vector feedForward(Vector input) {
+		Vector output = input;
+		Vector[] weightedInputs = new Vector[this.layers.length];
+		Vector[] outputs = new Vector[this.layers.length + 1];
+
+		outputs[0] = output; // Add input to outputs
+		for (int i = 0; i < this.layers.length;) {
+			weightedInputs[i] = output = this.layers[i].multiply(output);
+			outputs[++i] = output = this.activation.calculate(output);
 		}
-		return this.outputs[this.outputs.length - 1];
+		return outputs[outputs.length - 1];
+	}
+
+	public void fit(Vector[] inputs, Vector[] labels) {
+		//TODO
 	}
 
 	//TODO private - just for testing public
-	public Matrix adjustWeights(Vector expected, Vector actual) {
+	public Matrix deltaWeights(Vector expected, Vector actual) {
+
+		Vector[] weightedInputs = new Vector[this.layers.length];
+		Vector[] outputs = new Vector[this.layers.length + 1];
+
 		//TODO
 		// Vector expected --> label[i] of fit(Vector[] inputs, Vector[] labels)
 		// Vector actual --> return of feedForward(inputs[i])
-		//Vector layerInput = this.outputs[i - 1]; // this.outputs must contain the forwarded input
-		this.outputs[this.outputs.length - 1] = new Vector(0.655f, 0.55f);
+		// Vector layerInput = outputs[i - 1]; // outputs must contain the forwarded input
+		// Vector layerOutput = outputs[i];
 
-		Matrix dWeightOutput = calculateOutputError(expected, actual, new Vector(true,0.761f,0.45f));
+		Matrix dWeightOutput = calculateOutputError(
+				expected, actual, new Vector(true,0.761f,0.45f), DEFAULT_EPSILON);
 		return dWeightOutput;
 	}
 
-	private Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput) {
-		return calculateOutputPhi(expected, actual).multiply(EPSILON).multiplyT(layerInput);
+	private Matrix calculateOutputError(Vector expected, Vector actual, Vector layerInput, float epsilon) {
+		Vector phi = calculateOutputPhi(expected, actual);
+		return phi.multiply(epsilon).multiplyT(layerInput);
 	}
 
 	private Vector calculateOutputPhi(Vector expected, Vector actual) {
-		//TODO
 		Vector absError = expected.subtract(actual);
-		Vector fStrichX = this.outputs[this.outputs.length - 1];
-		Vector eins = new Vector(fStrichX.getDimension(), 1);
-		Vector fStrich = eins.subtract(fStrichX).multiply(fStrichX);
-
-		Vector phi = fStrich.multiply(absError);
-		return phi;
+		Vector oneVector = new Vector(actual.getDimension(), 1);
+		Vector derivation = oneVector.subtract(actual).multiply(actual);
+		return derivation.multiply(absError); // phi
 	}
 
 	private Vector calculateHiddenPhi() {
@@ -130,11 +133,12 @@ public class NeuralNetwork {
 	// Getters and Setters
 	//--------------------------------------
 
-	public void setActivation(IFunction activation) {
-		this.activation = Objects.requireNonNull(activation);
+	public Matrix[] getLayers() {
+		return layers;
 	}
 
 	public IFunction getActivation() {
 		return this.activation;
 	}
+
 }

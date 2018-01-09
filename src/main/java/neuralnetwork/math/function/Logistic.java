@@ -49,13 +49,13 @@ public class Logistic implements IFunction {
     @Override
     public Vector derivative(Vector x) {
         Vector f = calculate(x);
-        Vector one = new Vector(f.getDimension(), 1);
+        Vector one = new Vector(f.getNumberOfElements(), 1);
         return one.subtract(f).multiply(f);
     }
 
     @Override
     public Vector derivative(Vector x, Vector f) {
-        Vector one = new Vector(f.getDimension(), 1);
+        Vector one = new Vector(f.getNumberOfElements(), 1);
         return one.subtract(f).multiply(f);
     }
 

@@ -54,12 +54,12 @@ public class BinaryStep implements IFunction {
 
     @Override
     public Vector derivative(Vector x) {
-        return new Vector(x.getDimension());
+        return new Vector(x.getNumberOfElements());
     }
 
     @Override
     public Vector derivative(Vector x, Vector f) {
-        return new Vector(x.getDimension());
+        return new Vector(x.getNumberOfElements());
     }
 
     //--------------------------------------

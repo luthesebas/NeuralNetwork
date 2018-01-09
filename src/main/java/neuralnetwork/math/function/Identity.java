@@ -45,12 +45,12 @@ public class Identity implements IFunction {
 
     @Override
     public Vector derivative(Vector x) {
-        return new Vector(x.getDimension(), 1);
+        return new Vector(x.getNumberOfElements(), 1);
     }
 
     @Override
     public Vector derivative(Vector x, Vector f) {
-        return new Vector(x.getDimension(), 1);
+        return new Vector(x.getNumberOfElements(), 1);
     }
 
     //--------------------------------------

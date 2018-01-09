@@ -10,62 +10,53 @@ import java.util.Objects;
  */
 public final class Vector {
 
-    public static final Vector VECTOR_1D_UNIT = new Vector(1);
-    public static final Vector VECTOR_2D_UNIT_1 = new Vector(1,0);
-    public static final Vector VECTOR_2D_UNIT_2 = new Vector(0,1);
-    public static final Vector VECTOR_3D_UNIT_1 = new Vector(1,0,0);
-    public static final Vector VECTOR_3D_UNIT_2 = new Vector(0,1,0);
-    public static final Vector VECTOR_3D_UNIT_3 = new Vector(0,0,1);
+    public static final Vector VECTOR_1D_UNIT = new Vector(new float[]{1});
+    public static final Vector VECTOR_2D_UNIT_1 = new Vector(new float[]{1,0});
+    public static final Vector VECTOR_2D_UNIT_2 = new Vector(new float[]{0,1});
+    public static final Vector VECTOR_3D_UNIT_1 = new Vector(new float[]{1,0,0});
+    public static final Vector VECTOR_3D_UNIT_2 = new Vector(new float[]{0,1,0});
+    public static final Vector VECTOR_3D_UNIT_3 = new Vector(new float[]{0,0,1});
 
-    private final float[] elements;
-    private Dimension dimension;
+
+    private final float[] elements; // column --> M x 1
     private boolean transposed;
+    private Dimension dimension;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
-    public Vector(Dimension dimension) {
-        this.elements = new float[dimension.getM()];
+    public Vector(final int elements) {
+        this.elements = new float[elements];
         updateDimension();
     }
 
-    public Vector(Dimension dimension, float value) {
-        this.elements = new float[dimension.getM()];
+    public Vector(final int elements, final float value) {
+        this(elements, value, false);
+    }
+
+    public Vector(final int elements, final float value, final boolean transposed) {
+        this.elements = new float[elements];
         for (int i = 0; i < this.elements.length; i++) {
             this.elements[i] = value;
         }
+        this.transposed = transposed;
         updateDimension();
     }
 
-    public Vector(Dimension dimension, float value, boolean transposed) {
-        this(dimension, value);
-        this.transposed = transposed;
+    public Vector(final float[] elements) {
+        this(elements, false);
     }
 
-    public Vector(float... elements) {
-        this.elements = Objects.requireNonNull(elements);
+    public Vector(final float[] elements, final boolean transposed) {
+        this.elements = Objects.requireNonNull(elements).clone();
+        this.transposed = transposed;
         updateDimension();
-    }
-
-    public Vector(boolean transposed, float... elements) {
-        this(elements);
-        this.transposed = transposed;
     }
 
     //--------------------------------------
     // Methods
     //--------------------------------------
-
-    public boolean isTransposed() {
-        return this.transposed;
-    }
-
-    public Vector transpose() {
-        this.transposed = !this.transposed;
-        updateDimension();
-        return this;
-    }
 
     public Vector negate() {
         return this.multiply(-1);
@@ -80,7 +71,7 @@ public final class Vector {
     }
 
     public Vector add(Vector other) {
-        if (!validDimension(other)) {
+        if (!(this.getDimension().getM() == other.getDimension().getM())) {
             throwInvalidDimension(this.getDimension(), other.getDimension());
         }
         float[] result = this.toArray();
@@ -112,7 +103,7 @@ public final class Vector {
      * @return the vector result of the multiplication
      */
     public Vector multiply(Vector other) {
-        if (!validDimension(other)) {
+        if (!(this.getDimension().getM() == other.getDimension().getM())) {
             throwInvalidDimension(this.getDimension(), other.getDimension());
         }
 
@@ -156,16 +147,30 @@ public final class Vector {
         return result;
     }
 
-    public boolean validDimension(Vector other) {
-        return this.getDimension().getM() == other.getDimension().getM();
+    public boolean isTransposed() {
+        return this.transposed;
     }
 
-    private void throwInvalidDimension(Dimension expected, Dimension actual) {
-        throw new InvalidDimension(
-                "Vectors must have the same dimensions." +
-                        " Expected: " +expected +
-                        " Actual: " + actual
-        );
+    public Vector transpose() {
+        this.transposed = !this.transposed;
+        updateDimension();
+        return this;
+    }
+
+    public Dimension getDimension() {
+        return this.dimension;
+    }
+
+    public boolean validDimension(Vector other) {
+        return validDimension(other, false);
+    }
+
+    public boolean validDimension(Vector other, boolean transposed) {
+        if (transposed) {
+            return this.dimension.getM() == other.getDimension().getN();
+        } else {
+            return this.dimension.getM() == other.getDimension().getM();
+        }
     }
 
     public float getElement(int index) {
@@ -176,9 +181,13 @@ public final class Vector {
         return this.elements;
     }
 
-    public Dimension getDimension() {
-        return this.dimension;
+    public int getNumberOfElements() {
+        return  this.elements.length;
     }
+
+    //--------------------------------------
+    // Internal Methods
+    //--------------------------------------
 
     private void updateDimension() {
         if (this.transposed) {
@@ -186,6 +195,14 @@ public final class Vector {
         } else {
             this.dimension = new Dimension(this.elements.length, 1);
         }
+    }
+
+    private void throwInvalidDimension(Dimension expected, Dimension actual) {
+        throw new InvalidDimension(
+                "Vectors must have the same dimensions." +
+                        " Expected: " +expected +
+                        " Actual: " + actual
+        );
     }
 
     //--------------------------------------

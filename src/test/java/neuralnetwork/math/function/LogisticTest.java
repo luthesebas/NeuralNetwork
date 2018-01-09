@@ -18,8 +18,8 @@ class LogisticTest {
 
     @Test
     void calculate1() {
-        Vector expected = new Vector(0.7613327f, 0.45016602f);
-        Vector result = function.calculate(new Vector(1.16f, -0.2f));
+        Vector expected = new Vector(new float[]{0.7613327f, 0.45016602f});
+        Vector result = function.calculate(new Vector(new float[]{1.16f, -0.2f}));
         assertEquals(expected, result);
     }
 
@@ -39,15 +39,17 @@ class LogisticTest {
 
     @Test
     void derivative2() {
-        Vector expected = new Vector(0.24751657f, 0.22612129f);
-        Vector result = function.derivative(new Vector(0.2f, 0.639f));
+        Vector expected = new Vector(new float[]{0.24751657f, 0.22612129f});
+        Vector result = function.derivative(new Vector(new float[]{0.2f, 0.639f}));
         assertEquals(expected, result);
     }
 
     @Test
     void derivative3() {
-        Vector expected = new Vector(0.24751657f, 0.22612129f);
-        Vector result = function.derivative(new Vector(0.2f, 0.639f), new Vector(0.549834f, 0.65452737f));
+        Vector expected = new Vector(new float[]{0.24751657f, 0.22612129f});
+        Vector result = function.derivative(
+                new Vector(new float[]{0.2f, 0.639f}),
+                new Vector(new float[]{0.549834f, 0.65452737f}));
         assertEquals(expected, result);
     }
 

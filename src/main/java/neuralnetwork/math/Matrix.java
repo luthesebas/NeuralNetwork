@@ -8,14 +8,17 @@ import java.util.Objects;
  */
 public class Matrix {
 
-    private final Vector[] vectors;
+    private final Vector[] rows;
 
     //--------------------------------------
     // Constructors
     //--------------------------------------
 
     public Matrix(final Vector[] rows) {
-        this.vectors = Objects.requireNonNull(rows);
+        this.rows = Objects.requireNonNull(rows).clone();
+        for (Vector vector : this.rows) {
+            vector.transpose();
+        }
     }
 
     public Matrix(final int rows, final float... elements) {
@@ -25,13 +28,13 @@ public class Matrix {
         }
 
         int columns = elements.length / rows;
-        this.vectors = new Vector[rows];
+        this.rows = new Vector[rows];
 
         for (int i = 0; i < rows; i++) {
             int indexFrom = i * columns;
-            this.vectors[i] = new Vector(
+            this.rows[i] = new Vector(
                     Arrays.copyOfRange(elements, indexFrom, indexFrom + columns)
-            );
+            ).transpose();
         }//for
     }
 
@@ -40,26 +43,26 @@ public class Matrix {
     //--------------------------------------
 
     public Vector multiply(Vector other) {
-        float[] result = new float[this.vectors.length];
+        float[] result = new float[this.rows.length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = this.vectors[i].dot(other);
+            result[i] = this.rows[i].dot(other);
         }
 
         return new Vector(result);
     }
 
     public Vector getColumn(int index) {
-        float[] result = new float[this.vectors.length];
+        float[] result = new float[this.rows.length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = this.vectors[i].getElement(index);
+            result[i] = this.rows[i].getElement(index);
         }
         return new Vector(result);
     }
 
     public Dimension getDimension() {
         return new Dimension(
-                this.vectors.length,
-                this.vectors[0].getDimension().getM()
+                this.rows.length,
+                this.rows[0].getDimension().getN()
         );
     }
 
@@ -67,7 +70,7 @@ public class Matrix {
         Dimension dim = getDimension();
         float[][] result = new float[dim.getM()][dim.getN()];
         for (int i = 0; i < result.length; i++) {
-            result[i] = this.vectors[i].toArray();
+            result[i] = this.rows[i].toArray();
         }
         return result;
     }
@@ -75,7 +78,7 @@ public class Matrix {
     @Override
     public String toString() {
         String s = "Matrix{" + getDimension() + "columns=";
-        Vector[] temps = this.vectors.clone();
+        Vector[] temps = this.rows.clone();
         Arrays.stream(temps).forEach(Vector::transpose);
         return s + Arrays.toString(temps) + "}";
     }
@@ -89,12 +92,12 @@ public class Matrix {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Matrix matrix = (Matrix) o;
-        return Arrays.equals(vectors, matrix.vectors);
+        return Arrays.equals(rows, matrix.rows);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(vectors);
+        return Arrays.hashCode(rows);
     }
 
     //--------------------------------------

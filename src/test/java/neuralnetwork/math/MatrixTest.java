@@ -55,15 +55,15 @@ class MatrixTest {
 
     @Test
     void multiply() {
-        Vector expected = new Vector(17,39);
-        Vector other = new Vector(5,6);
+        Vector expected = new Vector(new float[]{17,39});
+        Vector other = new Vector(new float[]{5,6});
         Vector result = a.multiply(other);
         assertEquals(expected, result);
     }
 
     @Test
     void getColumn() {
-        Vector expected = new Vector(1,3,5);
+        Vector expected = new Vector(new float[]{1,3,5});
         Vector result = b.getColumn(0);
         assertEquals(expected, result);
     }

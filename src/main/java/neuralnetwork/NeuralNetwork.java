@@ -35,23 +35,20 @@ public class NeuralNetwork {
 	}
 
 	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers) {
-		this(inputNeurons, outputNeurons, hiddenLayers, new Random());
+		this(inputNeurons, outputNeurons, hiddenLayers, outputNeurons);
 	}
 
-	public NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, long seed) {
-		this(inputNeurons, outputNeurons, hiddenLayers, new Random(seed));
-	}
-
-	private NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, Random random) {
+	private NeuralNetwork(int inputNeurons, int outputNeurons, int hiddenLayers, int hiddenNeurons) {
+		Random random = new Random(100);
 		this.activation = new Logistic();
-		int hiddenRange = outputNeurons * outputNeurons;
 
 		this.layers = new Matrix[1 + hiddenLayers];
-		Matrix inputLayer = new Matrix(outputNeurons, random.range(outputNeurons * inputNeurons));
-		Matrix outputLayer = new Matrix(outputNeurons, random.range(hiddenRange));
+		Matrix inputLayer = new Matrix(hiddenNeurons, random.range(hiddenNeurons * inputNeurons));
+		Matrix outputLayer = new Matrix(outputNeurons, random.range(outputNeurons * hiddenNeurons));
 
-		for (int i = 0; i < hiddenLayers; i++) {
-			this.layers[i + 1] = new Matrix(outputNeurons, random.range(hiddenRange));
+		for (int i = 0; i <= hiddenLayers - 2; i++) {
+			Matrix hl = new Matrix(hiddenNeurons, random.range(hiddenNeurons * hiddenNeurons));
+			this.layers[i + 1] = hl;
 		}
 		this.layers[0] = inputLayer;
 		this.layers[this.layers.length - 1] = outputLayer;
@@ -120,8 +117,8 @@ public class NeuralNetwork {
 		// Vector layerInput = outputs[i - 1]; // outputs must contain the forwarded input
 		// Vector layerOutput = outputs[i];
 
-		Vector net = new Vector(0.639f, 0.2f); // weightedInputs[i]
-		Vector layerInput = new Vector(true,0.761f,0.45f);
+		Vector net = new Vector(new float[]{0.639f, 0.2f}); // weightedInputs[i]
+		Vector layerInput = new Vector(new float[]{0.761f,0.45f}, true);
 
 		Matrix[] deltaLayerWeights = new Matrix[this.layers.length];
 		deltaLayerWeights[0] = calculateOutputError(expected, actual, net, layerInput, learningRate);

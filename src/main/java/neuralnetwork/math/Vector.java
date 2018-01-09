@@ -103,7 +103,7 @@ public final class Vector {
      * @return the vector result of the multiplication
      */
     public Vector multiply(Vector other) {
-        if (!(this.getDimension().getM() == other.getDimension().getM())) {
+        if (!(this.elements.length == other.elements.length)) {
             throwInvalidDimension(this.getDimension(), other.getDimension());
         }
 

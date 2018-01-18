@@ -82,11 +82,11 @@ public class Matrix {
             throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
-        for (int m = 0; m < result.length; m++) {
-            double[] mRowResult = result[m];
-            double[] mRowThat = that.elements[m];
-            for (int n = 0; n < mRowResult.length; n++) {
-                mRowResult[n] += mRowThat[n];
+        for (int i = 0; i < result.length; i++) {
+            double[] iRowResult = result[i];
+            double[] iRowThat = that.elements[i];
+            for (int j = 0; j < iRowResult.length; j++) {
+                iRowResult[j] += iRowThat[j];
             }
         }
         return new Matrix(result);
@@ -97,26 +97,26 @@ public class Matrix {
             throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
-        for (int m = 0; m < result.length; m++) {
-            double[] mRowResult = result[m];
-            double[] mRowThat = that.elements[m];
-            for (int n = 0; n < mRowResult.length; n++) {
-                mRowResult[n] -= mRowThat[n];
+        for (int i = 0; i < result.length; i++) {
+            double[] iRowResult = result[i];
+            double[] iRowThat = that.elements[i];
+            for (int j = 0; j < iRowResult.length; j++) {
+                iRowResult[j] -= iRowThat[j];
             }
         }
         return new Matrix(result);
     }
 
-    public Matrix multiplyElementwise(Matrix that) {
+    public Matrix multiplyElementWise(Matrix that) {
         if (!this.dim.equals(that.dim)) {
             throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
-        for (int m = 0; m < result.length; m++) {
-            double[] mRowResult = result[m];
-            double[] mRowThat = that.elements[m];
-            for (int n = 0; n < mRowResult.length; n++) {
-                mRowResult[n] *= mRowThat[n];
+        for (int i = 0; i < result.length; i++) {
+            double[] iRowResult = result[i];
+            double[] iRowThat = that.elements[i];
+            for (int j = 0; j < iRowResult.length; j++) {
+                iRowResult[j] *= iRowThat[j];
             }
         }
         return new Matrix(result);

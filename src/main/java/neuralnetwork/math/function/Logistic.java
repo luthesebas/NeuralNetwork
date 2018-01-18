@@ -61,7 +61,7 @@ public class Logistic implements IFunction {
     }
 
     @Override
-    public Matrix derivative(Matrix x, Matrix f) {
+    public Matrix derivative(Matrix x, Matrix f) { // (1 - f) * f
         double[][] result = f.getElements();
         for (double[] iRow : result) {
             for (int j = 0; j < iRow.length; j++) {

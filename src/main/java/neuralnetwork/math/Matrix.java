@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- *
+ * Immutable Value Object
  */
 public class Matrix {
 
@@ -15,8 +15,8 @@ public class Matrix {
     public final static Matrix I_2D = new Matrix(new Dimension(2,2), 1,0,0,1);
     public final static Matrix I_3D = new Matrix(new Dimension(3,3), 1,0,0,0,1,0,0,0,1);
 
-    protected final double[][] elements;
-    protected Dimension dim;
+    private final double[][] elements;
+    private final Dimension dim;
 
     //--------------------------------------
     // Constructors
@@ -37,31 +37,28 @@ public class Matrix {
     }
 
     public Matrix(Dimension dim) {
-        this.dim = Objects.requireNonNull(dim).duplicate();
+        this.dim = dim.duplicate();
         this.elements = dim.constructArray();
     }
 
     public Matrix(Dimension dim, double value) {
-        this.dim = Objects.requireNonNull(dim).duplicate();
+        this.dim = dim.duplicate();
         this.elements = dim.constructArray(value);
     }
 
     public Matrix(Dimension dim, double... rowedElements) {
-        Objects.requireNonNull(dim);
-        Objects.requireNonNull(rowedElements);
-        if (isValidDimension(dim, rowedElements.length)) {
-            this.dim = dim.duplicate();
-            this.elements = dim.constructArray();
-            fillArray(this.elements, rowedElements, dim.getN());
-        } else {
+        if (dim.elements() != rowedElements.length) {
             throw new InvalidDimension(
-                    "Dimension and number of elements do not fit. Actual dimension: " + dim
-                    + ". Actual number of elements: " + rowedElements.length);
+                "Dimension and number of elements do not fit. Actual dimension elements: "
+                + dim.elements() + ". Actual number of elements: " + rowedElements.length);
         }
+        this.dim = dim.duplicate();
+        this.elements = dim.constructArray();
+        fillArray(this.elements, rowedElements, dim.getN());
     }
 
     public Matrix(double[][] elements) {
-        this.elements = Objects.requireNonNull(elements);
+        this.elements = elements.clone();
         this.dim = new Dimension(elements.length, elements[0].length);
     }
 
@@ -79,7 +76,7 @@ public class Matrix {
 
     public Matrix add(Matrix that) {
         if (!this.dim.equals(that.dim)) {
-            throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
+            throw new InvalidDimension("Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
         for (int i = 0; i < result.length; i++) {
@@ -94,7 +91,7 @@ public class Matrix {
 
     public Matrix subtract(Matrix that) {
         if (!this.dim.equals(that.dim)) {
-            throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
+            throw new InvalidDimension("Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
         for (int i = 0; i < result.length; i++) {
@@ -109,7 +106,7 @@ public class Matrix {
 
     public Matrix multiplyElementWise(Matrix that) {
         if (!this.dim.equals(that.dim)) {
-            throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
+            throw new InvalidDimension("Expected: " + this.dim + ". Actual: " + that.dim);
         }
         double[][] result = this.elements.clone();
         for (int i = 0; i < result.length; i++) {
@@ -123,15 +120,11 @@ public class Matrix {
     }
 
     public Matrix multiply(Matrix that) {
-        if (that.isScalar()) {
-            return multiply(that.elements[0][0]);
-        }
-        if (this.dim.getN() == that.dim.getM()) {
-            return multiplyMatrix(that);
-        }
+        if (that.isScalar()) { return multiply(that.elements[0][0]); }
+        if (this.dim.getN() == that.dim.getM()) { return multiplyMatrix(that); }
         throw new InvalidDimension(
-                "Invalid dimension. Expected a scalar or a matrix with dimensions m="
-                        + this.dim.getN() + ",n=N. Actual: " + that.dim);
+            "Expected a scalar or a matrix with dimensions m="
+            + this.dim.getN() + ",n=N. Actual: " + that.dim);
     }
 
     public Matrix multiply(double scalar) {
@@ -198,11 +191,7 @@ public class Matrix {
     }
 
     public Matrix duplicate() {
-        return new Matrix(this.elements.clone());
-    }
-
-    private boolean isValidDimension(Dimension dimension, int elements) {
-        return (dimension.area() == elements);
+        return new Matrix(this.elements);
     }
 
     private void fillArray(double[][] array, double[] rowedElements, int columns) {
@@ -248,21 +237,21 @@ public class Matrix {
 
     public double getElement(int i, int j) {
         if (i < 0 || i >= this.elements.length)
-            throw new IndexOutOfDimension("Index out of dimension dim: " + this.dim + ". Actual index: " + i);
+            throw new IndexOutOfDimension(this.dim + ". Actual index: " + i);
         if (j < 0 || j >= this.elements[0].length)
-            throw new IndexOutOfDimension("Index out of dimension dim: " + this.dim + ". Actual index: " + j);
+            throw new IndexOutOfDimension(this.dim + ". Actual index: " + j);
         return this.elements[i][j];
     }
 
     public double[] getColumn(int j) {
         if (j < 0 || j >= this.elements[0].length)
-            throw new IndexOutOfDimension("Index out of dimension dim: " + this.dim + ". Actual index: " + j);
+            throw new IndexOutOfDimension(this.dim + ". Actual index: " + j);
         return calculateColumn(j, this.dim.getM());
     }
 
     public double[] getRow(int i) {
         if (i < 0 || i >= this.elements.length)
-            throw new IndexOutOfDimension("Index out of dimension dim: " + this.dim + ". Actual index: " + i);
+            throw new IndexOutOfDimension(this.dim + ". Actual index: " + i);
         return this.elements[i].clone();
     }
 
@@ -270,7 +259,7 @@ public class Matrix {
         return this.elements.clone();
     }
 
-    public int getNumberOfElements() { return this.dim.area(); }
+    public int getNumberOfElements() { return this.dim.elements(); }
 
 
 }

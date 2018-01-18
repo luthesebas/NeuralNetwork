@@ -44,12 +44,12 @@ public class NeuralNetwork {
 
 		this.layers = new Matrix[1 + hiddenLayers];
 		Dimension dim = new Dimension(hiddenNeurons, inputNeurons);
-		Matrix inputLayer = new Matrix(dim, random.range(dim.area()));
+		Matrix inputLayer = new Matrix(dim, random.range(dim.elements()));
 		dim = new Dimension(outputNeurons, hiddenNeurons);
-		Matrix outputLayer = new Matrix(dim, random.range(dim.area()));
+		Matrix outputLayer = new Matrix(dim, random.range(dim.elements()));
 
 		dim = new Dimension(hiddenNeurons, hiddenNeurons);
-		int numberOfWeights = dim.area();
+		int numberOfWeights = dim.elements();
 		for (int i = 0; i <= hiddenLayers - 2; i++) {
 			Matrix hl = new Matrix(dim, random.range(numberOfWeights));
 			this.layers[i + 1] = hl;

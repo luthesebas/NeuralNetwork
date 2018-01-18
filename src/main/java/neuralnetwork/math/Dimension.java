@@ -40,7 +40,7 @@ public class Dimension {
         return result;
     }
 
-    public int area() {
+    public int elements() {
         return this.m * this.n;
     }
 

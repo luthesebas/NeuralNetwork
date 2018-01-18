@@ -1,9 +1,12 @@
 package neuralnetwork.math;
 
+import neuralnetwork.exception.IndexOutOfDimension;
+
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
- *
+ * Immutable Value Object
  */
 public class Dimension {
 
@@ -15,6 +18,10 @@ public class Dimension {
     //--------------------------------------
 
     public Dimension(int m, int n) {
+        if (m <= 0)
+            throw new IndexOutOfDimension("Invalid value m: It must be a number greater than zero.");
+        if (n <= 0)
+            throw new IndexOutOfDimension("Invalid value n: It must be a number greater than zero.");
         this.m = m;
         this.n = n;
     }
@@ -23,8 +30,26 @@ public class Dimension {
     // Methods
     //--------------------------------------
 
+    public double[][] constructArray() {
+        return new double[this.m][this.n];
+    }
+
+    public double[][] constructArray(double value) {
+        double[][] result = constructArray();
+        for (double[] row : result) { Arrays.fill(row, value); }
+        return result;
+    }
+
+    public int area() {
+        return this.m * this.n;
+    }
+
     public Dimension swap() {
         return new Dimension(this.n, this.m);
+    }
+
+    public Dimension duplicate() {
+        return new Dimension(this.m, this.n);
     }
 
     //--------------------------------------
@@ -33,10 +58,7 @@ public class Dimension {
 
     @Override
     public String toString() {
-        return "Dimension{" +
-                "m=" + m +
-                ", n=" + n +
-                '}';
+        return "Dimension{" + "m=" + m + ", n=" + n + '}';
     }
 
     @Override

@@ -1,4 +1,4 @@
-package neuralnetwork.math;
+package neuralnetwork;
 
 import neuralnetwork.exception.IndexOutOfDimension;
 

@@ -3,7 +3,6 @@
  */
 package neuralnetwork;
 
-import neuralnetwork.math.Dimension;
 import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Random;
 import neuralnetwork.math.function.IFunction;

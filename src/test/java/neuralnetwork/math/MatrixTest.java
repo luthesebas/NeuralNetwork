@@ -1,5 +1,6 @@
 package neuralnetwork.math;
 
+import neuralnetwork.Dimension;
 import neuralnetwork.exception.IndexOutOfDimension;
 import neuralnetwork.exception.InvalidDimension;
 import org.junit.jupiter.api.Test;

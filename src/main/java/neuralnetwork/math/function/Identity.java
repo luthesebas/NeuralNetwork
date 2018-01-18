@@ -1,5 +1,7 @@
 package neuralnetwork.math.function;
 
+import neuralnetwork.math.Matrix;
+
 /**
  *
  */
@@ -22,34 +24,32 @@ public class Identity implements IFunction {
      * Returns the input x.
      */
     @Override
-    public float calculate(float x) {
+    public double calculate(double x) {
         return x;
     }
 
     @Override
-    public float derivative(float x) {
+    public double derivative(double x) {
         return 1;
     }
 
     @Override
-    public float derivative(float x, float f) {
+    public double derivative(double x, double f) {
         return 1;
     }
 
     @Override
-    public Vector calculate(Vector x) {
+    public Matrix calculate(Matrix x) {
         return x;
     }
 
     @Override
-    public Vector derivative(Vector x) {
-        return new Vector(x.getNumberOfElements(), 1);
+    public Matrix derivative(Matrix x) {
+        return new Matrix(x.getDimension(), 1);
     }
 
     @Override
-    public Vector derivative(Vector x, Vector f) {
-        return new Vector(x.getNumberOfElements(), 1);
-    }
+    public Matrix derivative(Matrix x, Matrix f) { return new Matrix(x.getDimension(), 1); }
 
     //--------------------------------------
     // Getters and Setters

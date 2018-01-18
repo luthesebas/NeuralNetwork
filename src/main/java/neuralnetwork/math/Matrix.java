@@ -107,6 +107,21 @@ public class Matrix {
         return new Matrix(result);
     }
 
+    public Matrix multiplyElementwise(Matrix that) {
+        if (!this.dim.equals(that.dim)) {
+            throw new InvalidDimension("Invalid dimensions. Expected: " + this.dim + ". Actual: " + that.dim);
+        }
+        double[][] result = this.elements.clone();
+        for (int m = 0; m < result.length; m++) {
+            double[] mRowResult = result[m];
+            double[] mRowThat = that.elements[m];
+            for (int n = 0; n < mRowResult.length; n++) {
+                mRowResult[n] *= mRowThat[n];
+            }
+        }
+        return new Matrix(result);
+    }
+
     public Matrix multiply(Matrix that) {
         if (that.isScalar()) {
             return multiply(that.elements[0][0]);

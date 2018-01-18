@@ -23,10 +23,10 @@ public final class Random {
     // Methods
     //--------------------------------------
 
-    public float[] range(int amount) {
-        float[] result = new float[amount];
+    public double[] range(int amount) {
+        double[] result = new double[amount];
         for (int i = 0; i < amount; i++) {
-            result[i] = this.random.nextFloat();
+            result[i] = this.random.nextDouble();
         }
         return result;
     }

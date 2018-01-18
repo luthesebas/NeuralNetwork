@@ -115,8 +115,8 @@ public class Matrix {
             return multiplyMatrix(that);
         }
         throw new InvalidDimension(
-                "Invalid dimension. Expected scalar or Mx" + this.dim.getN()
-                        + ". Actual: " + that.dim);
+                "Invalid dimension. Expected scalar or " + this.dim.getN()
+                        + "xN. Actual: " + that.dim);
     }
 
     public Matrix multiply(double scalar) {

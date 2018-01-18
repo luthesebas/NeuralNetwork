@@ -49,7 +49,9 @@ public class Identity implements IFunction {
     }
 
     @Override
-    public Matrix derivative(Matrix x, Matrix f) { return new Matrix(x.getDimension(), 1); }
+    public Matrix derivative(Matrix x, Matrix f) {
+        return new Matrix(x.getDimension(), 1);
+    }
 
     //--------------------------------------
     // Getters and Setters

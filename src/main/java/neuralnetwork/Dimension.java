@@ -36,7 +36,9 @@ public class Dimension {
 
     public double[][] constructArray(double value) {
         double[][] result = constructArray();
-        for (double[] row : result) { Arrays.fill(row, value); }
+        for (double[] row : result) {
+            Arrays.fill(row, value);
+        }
         return result;
     }
 

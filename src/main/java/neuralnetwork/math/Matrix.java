@@ -12,9 +12,9 @@ import java.util.Objects;
  */
 public class Matrix {
 
-    public final static Matrix I_1D = new Matrix(new Dimension(1,1), 1);
-    public final static Matrix I_2D = new Matrix(new Dimension(2,2), 1,0,0,1);
-    public final static Matrix I_3D = new Matrix(new Dimension(3,3), 1,0,0,0,1,0,0,0,1);
+    public final static Matrix I_1D = new Matrix(new Dimension(1, 1), 1);
+    public final static Matrix I_2D = new Matrix(new Dimension(2, 2), 1, 0, 0, 1);
+    public final static Matrix I_3D = new Matrix(new Dimension(3, 3), 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
     private final double[][] elements;
     private final Dimension dim;
@@ -24,17 +24,17 @@ public class Matrix {
     //--------------------------------------
 
     public Matrix(int m, int n) {
-        this.dim = new Dimension(m,n);
+        this.dim = new Dimension(m, n);
         this.elements = dim.constructArray();
     }
 
     public Matrix(int m, int n, double value) {
-        this.dim = new Dimension(m,n);
+        this.dim = new Dimension(m, n);
         this.elements = dim.constructArray(value);
     }
 
     public Matrix(int m, int n, double... rowedElements) {
-        this(new Dimension(m,n), rowedElements);
+        this(new Dimension(m, n), rowedElements);
     }
 
     public Matrix(Dimension dim) {
@@ -50,8 +50,8 @@ public class Matrix {
     public Matrix(Dimension dim, double... rowedElements) {
         if (dim.elements() != rowedElements.length) {
             throw new InvalidDimension(
-                "Dimension and number of elements do not fit. Actual dimension elements: "
-                + dim.elements() + ". Actual number of elements: " + rowedElements.length);
+                    "Dimension and number of elements do not fit. Actual dimension elements: "
+                            + dim.elements() + ". Actual number of elements: " + rowedElements.length);
         }
         this.dim = dim.duplicate();
         this.elements = dim.constructArray();
@@ -121,11 +121,15 @@ public class Matrix {
     }
 
     public Matrix multiply(Matrix that) {
-        if (that.isScalar()) { return multiply(that.elements[0][0]); }
-        if (this.dim.getN() == that.dim.getM()) { return multiplyMatrix(that); }
+        if (that.isScalar()) {
+            return multiply(that.elements[0][0]);
+        }
+        if (this.dim.getN() == that.dim.getM()) {
+            return multiplyMatrix(that);
+        }
         throw new InvalidDimension(
-            "Expected a scalar or a matrix with dimensions m="
-            + this.dim.getN() + ",n=N. Actual: " + that.dim);
+                "Expected a scalar or a matrix with dimensions m="
+                        + this.dim.getN() + ",n=N. Actual: " + that.dim);
     }
 
     public Matrix multiply(double scalar) {
@@ -174,9 +178,9 @@ public class Matrix {
         int M = this.dim.getM();
         int N = this.dim.getN();
         double[][] result = new double[N][M];
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             double[] iColumnResult = result[i];
-            for(int j = 0; j < M; j++) {
+            for (int j = 0; j < M; j++) {
                 iColumnResult[j] = this.elements[j][i];
             }
         }
@@ -260,7 +264,9 @@ public class Matrix {
         return this.elements.clone();
     }
 
-    public int getNumberOfElements() { return this.dim.elements(); }
+    public int getNumberOfElements() {
+        return this.dim.elements();
+    }
 
 
 }

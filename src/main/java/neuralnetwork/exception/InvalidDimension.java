@@ -3,7 +3,7 @@ package neuralnetwork.exception;
 /**
  *
  */
-public class InvalidDimension extends RuntimeException{
+public class InvalidDimension extends RuntimeException {
 
     //--------------------------------------
     // Custom exception

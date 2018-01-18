@@ -10,46 +10,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
 
-    private Matrix A = new Matrix(3,3, 2);
-    private Matrix B = new Matrix(3,2, 3);
-    private Matrix C = new Matrix(3,3, 1,2,3,4,5,6,7,8,9);
-    private Matrix D = new Matrix(3,3, 9,8,7,6,5,4,3,2,1);
+    private final Matrix A = new Matrix(3, 3, 2);
+    private final Matrix B = new Matrix(3, 2, 3);
+    private final Matrix C = new Matrix(3, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    private final Matrix D = new Matrix(3, 3, 9, 8, 7, 6, 5, 4, 3, 2, 1);
 
-    private Matrix a = new Matrix(3,1, 1,2,3);
-    private Matrix b = new Matrix(3,1, 3,2,1);
+    private final Matrix a = new Matrix(3, 1, 1, 2, 3);
+    private final Matrix b = new Matrix(3, 1, 3, 2, 1);
 
     @Test
     void operations() {
-        Matrix input = new Matrix(4,1, 1);
-        Matrix layer0 = new Matrix(3,4, 1);
-        Matrix layer1 = new Matrix(3,3, 1);
-        Matrix layer2 = new Matrix(1,3, 1);
+        Matrix input = new Matrix(4, 1, 1);
+        Matrix layer0 = new Matrix(3, 4, 1);
+        Matrix layer1 = new Matrix(3, 3, 1);
+        Matrix layer2 = new Matrix(1, 3, 1);
 
         Matrix result = layer0.multiply(input);
         result = layer1.multiply(result);
         result = layer1.multiply(result);
         result = layer2.multiply(result);
 
-        assertEquals(new Matrix(1,1, 108), result);
+        assertEquals(new Matrix(1, 1, 108), result);
     }
 
     @Test
     void add() {
-        Matrix expected = new Matrix(3,3, 10);
+        Matrix expected = new Matrix(3, 3, 10);
         Matrix actual = C.add(D);
         assertEquals(expected, actual);
     }
 
     @Test
     void add1() {
-        Matrix expected = new Matrix(3,1, 4);
+        Matrix expected = new Matrix(3, 1, 4);
         Matrix actual = a.add(b);
         assertEquals(expected, actual);
     }
 
     @Test
     void add2() {
-        Matrix c = new Matrix(4,1);
+        Matrix c = new Matrix(4, 1);
         Executable addException = () -> a.add(c);
         assertThrows(InvalidDimension.class, addException);
     }
@@ -62,21 +62,21 @@ class MatrixTest {
 
     @Test
     void subtract() {
-        Matrix expected = new Matrix(3,3);
+        Matrix expected = new Matrix(3, 3);
         Matrix actual = C.subtract(C);
         assertEquals(expected, actual);
     }
 
     @Test
     void subtract1() {
-        Matrix expected = new Matrix(new Dimension(3,1), -2,0,2);
+        Matrix expected = new Matrix(new Dimension(3, 1), -2, 0, 2);
         Matrix actual = a.subtract(b);
         assertEquals(expected, actual);
     }
 
     @Test
     void subtract2() {
-        Matrix c = new Matrix(new Dimension(4,1));
+        Matrix c = new Matrix(new Dimension(4, 1));
         Executable subtractException = () -> a.subtract(c);
         assertThrows(InvalidDimension.class, subtractException);
     }
@@ -89,36 +89,36 @@ class MatrixTest {
 
     @Test
     void multiply() {
-        Matrix expected = new Matrix(new Dimension(3,2), 18);
+        Matrix expected = new Matrix(new Dimension(3, 2), 18);
         Matrix actual = A.multiply(B);
         assertEquals(expected, actual);
     }
 
     @Test
     void multiply1() {
-        Matrix expected = new Matrix(new Dimension(3,1), 12);
+        Matrix expected = new Matrix(new Dimension(3, 1), 12);
         Matrix actual = A.multiply(a);
         assertEquals(expected, actual);
     }
 
     @Test
     void multiply2() {
-        Matrix expected = new Matrix(new Dimension(3,3), 3,2,1,6,4,2,9,6,3);
+        Matrix expected = new Matrix(new Dimension(3, 3), 3, 2, 1, 6, 4, 2, 9, 6, 3);
         Matrix actual = a.multiply(b.transpose());
         assertEquals(expected, actual);
     }
 
     @Test
     void multiply3() {
-        Matrix expected = new Matrix(new Dimension(3,3), 4);
-        Matrix actual = A.multiply(new Matrix(new Dimension(1,1), 2));
+        Matrix expected = new Matrix(new Dimension(3, 3), 4);
+        Matrix actual = A.multiply(new Matrix(new Dimension(1, 1), 2));
         assertEquals(expected, actual);
     }
 
     @Test
     void multiply4() {
-        Matrix expected = new Matrix(new Dimension(3,1), 2,4,6);
-        Matrix actual = a.multiply(new Matrix(new Dimension(1,1), 2));
+        Matrix expected = new Matrix(new Dimension(3, 1), 2, 4, 6);
+        Matrix actual = a.multiply(new Matrix(new Dimension(1, 1), 2));
         assertEquals(expected, actual);
     }
 
@@ -136,28 +136,28 @@ class MatrixTest {
 
     @Test
     void multiply7() {
-        Matrix expected = new Matrix(new Dimension(3,3), 4);
-        Matrix actual = A.multiply(new Matrix(new Dimension(1,1), 2));
+        Matrix expected = new Matrix(new Dimension(3, 3), 4);
+        Matrix actual = A.multiply(new Matrix(new Dimension(1, 1), 2));
         assertEquals(expected, actual);
     }
 
     @Test
     void negate() {
-        Matrix expected = new Matrix(new Dimension(3,3), -1,-2,-3,-4,-5,-6,-7,-8,-9);
+        Matrix expected = new Matrix(new Dimension(3, 3), -1, -2, -3, -4, -5, -6, -7, -8, -9);
         Matrix actual = C.negate();
         assertEquals(expected, actual);
     }
 
     @Test
     void transpose() {
-        Matrix expected = new Matrix(new Dimension(3,3), 1,4,7,2,5,8,3,6,9);
+        Matrix expected = new Matrix(new Dimension(3, 3), 1, 4, 7, 2, 5, 8, 3, 6, 9);
         Matrix actual = C.transpose();
         assertEquals(expected, actual);
     }
 
     @Test
     void transpose1() {
-        Matrix expected = new Matrix(new Dimension(1,3), 1,2,3);
+        Matrix expected = new Matrix(new Dimension(1, 3), 1, 2, 3);
         Matrix actual = a.transpose();
         assertEquals(expected, actual);
     }
@@ -191,7 +191,7 @@ class MatrixTest {
     @Test
     void getColumn() {
         double[] actual = C.getColumn(0);
-        assertArrayEquals(new double[]{1,4,7}, actual);
+        assertArrayEquals(new double[]{1, 4, 7}, actual);
     }
 
     @Test
@@ -209,7 +209,7 @@ class MatrixTest {
     @Test
     void getRow() {
         double[] actual = C.getRow(0);
-        assertArrayEquals(new double[]{1,2,3}, actual);
+        assertArrayEquals(new double[]{1, 2, 3}, actual);
     }
 
     @Test
@@ -226,38 +226,38 @@ class MatrixTest {
 
     @Test
     void getElement() {
-        double actual = C.getElement(0,0);
+        double actual = C.getElement(0, 0);
         assertEquals(1, actual, 1);
     }
 
     @Test
     void getElement1() {
-        Executable getElementException = () -> C.getElement(0,3);
+        Executable getElementException = () -> C.getElement(0, 3);
         assertThrows(IndexOutOfDimension.class, getElementException);
     }
 
     @Test
     void getElement2() {
-        Executable getElementException = () -> C.getElement(3,0);
+        Executable getElementException = () -> C.getElement(3, 0);
         assertThrows(IndexOutOfDimension.class, getElementException);
     }
 
     @Test
     void getElement3() {
-        Executable getElementException = () -> C.getElement(-1,0);
+        Executable getElementException = () -> C.getElement(-1, 0);
         assertThrows(IndexOutOfDimension.class, getElementException);
     }
 
     @Test
     void getElement4() {
-        Executable getElementException = () -> C.getElement(0,-1);
+        Executable getElementException = () -> C.getElement(0, -1);
         assertThrows(IndexOutOfDimension.class, getElementException);
     }
 
     @Test
     void getElements() {
         double[][] actual = C.getElements();
-        assertArrayEquals(new double[][]{{1,2,3},{4,5,6},{7,8,9}}, actual);
+        assertArrayEquals(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}, actual);
     }
 
     @Test
@@ -267,7 +267,7 @@ class MatrixTest {
 
     @Test
     void isScalar() {
-        assertTrue((new Matrix(1,1)).isScalar());
+        assertTrue((new Matrix(1, 1)).isScalar());
         assertTrue(a.transpose().multiply(b).isScalar());
     }
 

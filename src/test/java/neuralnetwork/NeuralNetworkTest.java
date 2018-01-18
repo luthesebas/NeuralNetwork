@@ -9,40 +9,22 @@ class NeuralNetworkTest {
 
     @Test
     public void feedForward() {
-        Vector expected = new Vector(new float[]{0.74674326f, 0.7892308f});
-        Vector input = new Vector(new float[]{5,6,7});
-        NeuralNetwork brain = new NeuralNetwork(3,2, 1);
-        Vector result = brain.feedForward(input, new Vector[2], new Vector[3]);
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void feedForward1() {
-        Vector expected = new Vector(new float[]{0.6061278f, 0.54213375f});
-        Vector input = new Vector(new float[]{0.7f,0.6f});
-        Matrix layer0 = new Matrix(2, 0.8f, 0.5f, -0.6f, 0.7f);
-        Matrix layer1 = new Matrix(2, 0.4f, 0.3f, -0.4f, 0.9f);
+        Matrix expected = new Matrix(2,1,0.6061277720053839, 0.5421337758147264);
+        Matrix input = new Matrix(2,1,0.7,0.6);
+        Matrix layer0 = new Matrix(2,2, 0.8, 0.5, -0.6, 0.7);
+        Matrix layer1 = new Matrix(2,2, 0.4, 0.3, -0.4, 0.9);
         NeuralNetwork brain = new NeuralNetwork(layer0, layer1);
-        Vector result = brain.feedForward(input, new Vector[2], new Vector[3]);
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void feedForward2() {
-        Vector expected = new Vector(new float[]{0.74674326f});
-        Vector input = new Vector(new float[]{1,2,3,4});
-        NeuralNetwork brain = new NeuralNetwork(4,1, 2);
-        Vector result = brain.feedForward(input, new Vector[3], new Vector[4]);
+        Matrix result = brain.feedForward(input, new Matrix[2], new Matrix[3]);
         assertEquals(expected, result);
     }
 
     @Test
     public void calculateLayerWeightShift() {
-        Matrix expected = new Matrix(2, 4.213191E-4f, 2.4913746E-4f, -6.592163E-4f, -3.898125E-4f);
+        Matrix expected = new Matrix(2,2, 4.213190763422101E-4, 2.4913743090011173E-4, -6.592162305861712E-4, -3.898124896734953E-4);
         NeuralNetwork brain = new NeuralNetwork(3,2, 1);
         Matrix[] result = brain.calculateLayerWeightShift(
-                new Vector(new float[]{0.9f,0.2f}),
-                new Vector(new float[]{0.655f,0.55f}),
+                new Matrix(2,1,0.9,0.2),
+                new Matrix(2,1,0.655,0.55),
                 NeuralNetwork.DEFAULT_EPSILON);
         assertEquals(expected, result[0]);
     }

@@ -1,6 +1,5 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

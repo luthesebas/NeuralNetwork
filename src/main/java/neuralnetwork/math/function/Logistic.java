@@ -1,7 +1,5 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
-
 /**
  *
  */

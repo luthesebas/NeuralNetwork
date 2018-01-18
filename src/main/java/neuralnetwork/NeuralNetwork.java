@@ -5,7 +5,6 @@ package neuralnetwork;
 
 import neuralnetwork.math.Matrix;
 import neuralnetwork.math.Random;
-import neuralnetwork.math.Vector;
 import neuralnetwork.math.function.IFunction;
 import neuralnetwork.math.function.Logistic;
 

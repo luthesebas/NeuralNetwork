@@ -1,6 +1,6 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
+import neuralnetwork.math.Matrix;
 
 /**
  *
@@ -22,41 +22,53 @@ public class Logistic implements IFunction {
     //--------------------------------------
 
     @Override
-    public float calculate(float x) {
-        return (float) (1 / (1 + Math.pow(E, -x)));
+    public double calculate(double x) {
+        return 1 / (1 + Math.pow(E, -x));
     }
 
     @Override
-    public float derivative(float x) {
-        float f = calculate(x);
+    public double derivative(double x) {
+        double f = calculate(x);
         return f * (1 - f);
     }
 
     @Override
-    public float derivative(float x, float f) {
+    public double derivative(double x, double f) {
         return f * (1 - f);
     }
 
     @Override
-    public Vector calculate(Vector x) {
-        float[] result = x.toArray();
-        for (int i = 0; i < result.length; i++) {
-            result[i] = calculate(result[i]);
+    public Matrix calculate(Matrix x) {
+        double[][] result = x.getElements();
+        for (double[] iRow : result) {
+            for (int j = 0; j < iRow.length; j++) {
+                iRow[j] = calculate(iRow[j]);
+            }
         }
-        return new Vector(result);
+        return new Matrix(result);
     }
 
     @Override
-    public Vector derivative(Vector x) {
-        Vector f = calculate(x);
-        Vector one = new Vector(f.getNumberOfElements(), 1);
-        return one.subtract(f).multiply(f);
+    public Matrix derivative(Matrix x) { // (1 - f) * f
+        Matrix f = calculate(x);
+        double[][] result = f.getElements();
+        for (double[] iRow : result) {
+            for (int j = 0; j < iRow.length; j++) {
+                iRow[j] = (1 - iRow[j]) * iRow[j];
+            }
+        }
+        return new Matrix(result);
     }
 
     @Override
-    public Vector derivative(Vector x, Vector f) {
-        Vector one = new Vector(f.getNumberOfElements(), 1);
-        return one.subtract(f).multiply(f);
+    public Matrix derivative(Matrix x, Matrix f) {
+        double[][] result = f.getElements();
+        for (double[] iRow : result) {
+            for (int j = 0; j < iRow.length; j++) {
+                iRow[j] = (1 - iRow[j]) * iRow[j];
+            }
+        }
+        return new Matrix(result);
     }
 
     //--------------------------------------

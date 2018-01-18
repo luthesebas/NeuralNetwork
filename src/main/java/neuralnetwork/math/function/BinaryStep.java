@@ -1,6 +1,6 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
+import neuralnetwork.math.Matrix;
 
 /**
  *
@@ -25,7 +25,7 @@ public class BinaryStep implements IFunction {
      * returns 1 for x >= 0.
      */
     @Override
-    public float calculate(float x) {
+    public double calculate(double x) {
         if (x < 0) {
             return -1;
         } else {
@@ -34,32 +34,34 @@ public class BinaryStep implements IFunction {
     }
 
     @Override
-    public float derivative(float x) {
+    public double derivative(double x) {
         return 0;
     }
 
     @Override
-    public float derivative(float x, float f) {
+    public double derivative(double x, double f) {
         return 0;
     }
 
     @Override
-    public Vector calculate(Vector x) {
-        float[] result = x.toArray();
-        for (int i = 0; i < result.length; i++) {
-            result[i] = calculate(result[i]);
+    public Matrix calculate(Matrix x) {
+        double[][] result = x.getElements();
+        for (double[] iRow : result) {
+            for (int j = 0; j < result.length; j++) {
+                iRow[j] = calculate(iRow[j]);
+            }
         }
-        return new Vector(result);
+        return new Matrix(result);
     }
 
     @Override
-    public Vector derivative(Vector x) {
-        return new Vector(x.getNumberOfElements());
+    public Matrix derivative(Matrix x) {
+        return new Matrix(x.getDimension());
     }
 
     @Override
-    public Vector derivative(Vector x, Vector f) {
-        return new Vector(x.getNumberOfElements());
+    public Matrix derivative(Matrix x, Matrix f) {
+        return new Matrix(x.getDimension());
     }
 
     //--------------------------------------

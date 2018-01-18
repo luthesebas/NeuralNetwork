@@ -1,14 +1,14 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
+import neuralnetwork.math.Matrix;
 
 public interface IFunction {
 
-    float calculate(float x);
-    float derivative(float x);
-    float derivative(float x, float f);
-    Vector calculate(Vector x);
-    Vector derivative(Vector x);
-    Vector derivative(Vector x, Vector f);
+    double calculate(double x);
+    double derivative(double x);
+    double derivative(double x, double f);
+    Matrix calculate(Matrix x);
+    Matrix derivative(Matrix x);
+    Matrix derivative(Matrix x, Matrix f);
 
 }

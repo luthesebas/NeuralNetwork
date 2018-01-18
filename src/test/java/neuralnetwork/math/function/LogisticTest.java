@@ -1,6 +1,6 @@
 package neuralnetwork.math.function;
 
-import neuralnetwork.math.Vector;
+import neuralnetwork.math.Matrix;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,45 +11,45 @@ class LogisticTest {
 
     @Test
     void calculate() {
-        float expected = 0.7613327f;
-        float result = function.calculate(1.16f);
+        double expected = 0.7613327;
+        double result = function.calculate(1.16);
         assertEquals(expected, result, 0.00001);
     }
 
     @Test
     void calculate1() {
-        Vector expected = new Vector(new float[]{0.7613327f, 0.45016602f});
-        Vector result = function.calculate(new Vector(new float[]{1.16f, -0.2f}));
+        Matrix expected = new Matrix(2,1,0.7613327084420322, 0.45016600419083186);
+        Matrix result = function.calculate(new Matrix(2,1,1.16, -0.2));
         assertEquals(expected, result);
     }
 
     @Test
     void derivative() {
-        float expected = 0.24751657f;
-        float result = function.derivative(0.2f);
+        double expected = 0.24751657;
+        double result = function.derivative(0.2);
         assertEquals(expected, result, 0.00001);
     }
 
     @Test
     void derivative1() {
-        float expected = 0.24751657f;
-        float result = function.derivative(0.2f, 0.549834f);
+        double expected = 0.24751657;
+        double result = function.derivative(0.2, 0.549834);
         assertEquals(expected, result, 0.00001);
     }
 
     @Test
     void derivative2() {
-        Vector expected = new Vector(new float[]{0.24751657f, 0.22612129f});
-        Vector result = function.derivative(new Vector(new float[]{0.2f, 0.639f}));
+        Matrix expected = new Matrix(2,1,0.24751657286169182, 0.2261212919569842);
+        Matrix result = function.derivative(new Matrix(2,1,0.2, 0.639));
         assertEquals(expected, result);
     }
 
     @Test
     void derivative3() {
-        Vector expected = new Vector(new float[]{0.24751657f, 0.22612129f});
-        Vector result = function.derivative(
-                new Vector(new float[]{0.2f, 0.639f}),
-                new Vector(new float[]{0.549834f, 0.65452737f}));
+        Matrix expected = new Matrix(2,1,0.24751657286169182, 0.2261212919569842);
+        Matrix result = function.derivative(
+                new Matrix(2,1,0.2, 0.639),
+                new Matrix(2,1,0.5498339958091681, 0.6545273698831887));
         assertEquals(expected, result);
     }
 

@@ -60,7 +60,7 @@ public class Matrix {
         }
     }
 
-    protected Matrix(double[][] elements) {
+    public Matrix(double[][] elements) {
         this.elements = Objects.requireNonNull(elements);
         this.dim = new Dimension(elements.length, elements[0].length);
     }
@@ -254,6 +254,8 @@ public class Matrix {
     public double[][] getElements() {
         return this.elements.clone();
     }
+
+    public int getNumberOfElements() { return this.dim.area(); }
 
 
 }

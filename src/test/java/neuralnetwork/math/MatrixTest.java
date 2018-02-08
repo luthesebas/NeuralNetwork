@@ -142,6 +142,12 @@ class MatrixTest {
     }
 
     @Test
+    void multiply8() {
+        Matrix actual = A.multiply(Matrix.I_3D);
+        assertEquals(A, actual);
+    }
+
+    @Test
     void negate() {
         Matrix expected = new Matrix(new Dimension(3, 3), -1, -2, -3, -4, -5, -6, -7, -8, -9);
         Matrix actual = C.negate();

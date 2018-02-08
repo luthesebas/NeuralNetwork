@@ -19,14 +19,12 @@ class NeuralNetworkTest {
     }
 
     @Test
-    void calculateLayerWeightShift() {
-        Matrix expected = new Matrix(2, 2, 4.213190763422101E-4, 2.4913743090011173E-4, -6.592162305861712E-4, -3.898124896734953E-4);
-        NeuralNetwork brain = new NeuralNetwork(3, 2, 1);
-        Matrix[] result = brain.calculateLayerWeightShift(
-                new Matrix(2, 1, 0.9, 0.2),
-                new Matrix(2, 1, 0.655, 0.55),
-                NeuralNetwork.DEFAULT_EPSILON);
-        assertEquals(expected, result[0]);
+    void fit() {
+        Matrix[] inputs = new Matrix[]{new Matrix(2,1,0.1, 0.01)};
+        Matrix[] labels = new Matrix[]{new Matrix(2,1,1)};
+        NeuralNetwork brain = new NeuralNetwork(Matrix.I_2D);
+        brain.fit(inputs, labels, 1);
     }
+
 
 }

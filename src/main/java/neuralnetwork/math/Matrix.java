@@ -129,7 +129,7 @@ public class Matrix {
         }
         throw new InvalidDimension(
                 "Expected a scalar or a matrix with dimensions m="
-                        + this.dim.getN() + ",n=N. Actual: " + that.dim);
+                        + this.dim.getN() + ", n=N. Actual: " + that.dim);
     }
 
     public Matrix multiply(double scalar) {
